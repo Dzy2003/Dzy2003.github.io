@@ -6,24 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hello World | Hexo</title>
+  <title>bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="LeetCode刷题记录2022.9.11：206.反转链表（递归，迭代）链表：听说过两天反转链表又写不出来了？  反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。  解法1：双指针法：  1234567">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/09/23/hello-world/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-09-23T14:30:23.324Z">
-<meta property="article:modified_time" content="2022-09-23T14:30:23.324Z">
-<meta property="article:author" content="John Doe">
+<meta property="og:title" content="bairi的博客">
+<meta property="og:url" content="http://example.com/2022/09/24/LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="bairi的博客">
+<meta property="og:description" content="LeetCode刷题记录2022.9.11：206.反转链表（递归，迭代）链表：听说过两天反转链表又写不出来了？  反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。  解法1：双指针法：  1234567">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B93.png">
+<meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/p3.png">
+<meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/008eGmZEly1goo58gauidg30fw0bi4qr.gif">
+<meta property="article:published_time" content="2022-09-24T04:50:12.279Z">
+<meta property="article:modified_time" content="2022-09-24T05:53:23.965Z">
+<meta property="article:author" content="bairi">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B93.png">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="bairi的博客" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="/assets/icon.png">
   
   <link rel="stylesheet" type="text/css" href="/./main.0cf68a.css">
   <style type="text/css">
@@ -47,10 +51,10 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="" class="js-avatar">
+			<img src="/assets/touxiang.jpg" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/"></a></h1>
+		  <h1 class="header-author"><a href="/">bairi</a></h1>
 		</hgroup>
 		
 
@@ -81,13 +85,13 @@
 		<nav class="header-nav">
 			<div class="social">
 				
-					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+					<a class="github" target="_blank" href="https://github.com/Dzy2003" title="github"><i class="icon-github"></i></a>
 		        
-					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
+					<a class="qq" target="_blank" href="/assets/qq.png" title="qq"><i class="icon-qq"></i></a>
 		        
-					<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
+					<a class="weixin" target="_blank" href="/assets/weixin.png" title="weixin"><i class="icon-weixin"></i></a>
 		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+					<a class="mail" target="_blank" href="mailto:2742697343@qq.com" title="mail"><i class="icon-mail"></i></a>
 		        
 			</div>
 		</nav>
@@ -105,10 +109,10 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="" class="js-avatar">
+				<img src="/assets/touxiang.jpg" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author"></h1>
+			  <h1 class="header-author js-header-author">bairi</h1>
 			</hgroup>
 			
 			
@@ -122,13 +126,13 @@
 			<nav class="header-nav">
 				<div class="social">
 					
-						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
+						<a class="github" target="_blank" href="https://github.com/Dzy2003" title="github"><i class="icon-github"></i></a>
 			        
-						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
+						<a class="qq" target="_blank" href="/assets/qq.png" title="qq"><i class="icon-qq"></i></a>
 			        
-						<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
+						<a class="weixin" target="_blank" href="/assets/weixin.png" title="weixin"><i class="icon-weixin"></i></a>
 			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+						<a class="mail" target="_blank" href="mailto:2742697343@qq.com" title="mail"><i class="icon-mail"></i></a>
 			        
 				</div>
 			</nav>
@@ -154,39 +158,140 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-world" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-LeetCode刷题记录" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Hello World
-    </h1>
-  
-
-        
-        <a href="/2022/09/23/hello-world/" class="archive-article-date">
-  	<time datetime="2022-09-23T14:30:23.324Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-23</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h1 id="LeetCode刷题记录"><a href="#LeetCode刷题记录" class="headerlink" title="LeetCode刷题记录"></a>LeetCode刷题记录</h1><h4 id="2022-9-11：206-反转链表（递归，迭代）"><a href="#2022-9-11：206-反转链表（递归，迭代）" class="headerlink" title="2022.9.11：206.反转链表（递归，迭代）"></a>2022.9.11：206.反转链表（递归，迭代）</h4><p><a href="./problems/0206.%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8.md">链表：听说过两天反转链表又写不出来了？</a> </p>
+<p>反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。</p>
+<ol>
+<li>解法1：双指针法：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">    ListNode pre=<span class="literal">null</span>;<span class="comment">//定义前一个指针</span></span><br><span class="line">    ListNode cur=head;<span class="comment">//定义当前指针</span></span><br><span class="line">    <span class="keyword">while</span>(cur!=<span class="literal">null</span>)&#123;           </span><br><span class="line">        ListNode temp=cur.next;<span class="comment">//定义临时指针存储cur.next；</span></span><br><span class="line">        cur.next=pre;<span class="comment">//反转链表</span></span><br><span class="line">        pre=cur;<span class="comment">//更新pre</span></span><br><span class="line">        cur=temp;<span class="comment">//更新cur</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>解法2：递归法：大体思路与双指针类似。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> reverse(<span class="literal">null</span>,head);<span class="comment">//入口</span></span><br><span class="line">&#125;</span><br><span class="line">   <span class="keyword">private</span> ListNode <span class="title function_">reverse</span><span class="params">(ListNode pre,ListNode cur)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(cur==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> pre;<span class="comment">//递归出口：只有当cur为null的时候才会结束递归。</span></span><br><span class="line">        &#125;</span><br><span class="line">        ListNode temp=cur.next;<span class="comment">//临时节点存储cur.next</span></span><br><span class="line">        cur.next=pre;<span class="comment">//反转操作</span></span><br><span class="line">        <span class="keyword">return</span> reverse(cur,temp);<span class="comment">//此时的cur即是pre，temp即是cur，无需进行如递归一样进行cur和pre的更新操作。</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>递归二：从后往前反转。当递归到pre.next.next&#x3D;&#x3D;null时会返回pre.next；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">reverseList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(head==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(head.next==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;<span class="comment">//递归出口</span></span><br><span class="line">        &#125;</span><br><span class="line">        ListNode last=reverseList(head.next);<span class="comment">//进入递归</span></span><br><span class="line">        head.next.next=head;反转</span><br><span class="line">        head.next=<span class="literal">null</span>;将pre。next置空，</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+
+
+
+
+<h4 id="2022-9-12-：-24-：链表两两反转（迭代）"><a href="#2022-9-12-：-24-：链表两两反转（迭代）" class="headerlink" title="2022.9.12 ： 24 ：链表两两反转（迭代）"></a>2022.9.12 ： 24 ：链表两两反转（迭代）</h4><p><a href="./problems/0024.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9.md">链表：两两交换链表中的节点</a></p>
+<p>如图将cur指向后一个节点后将后一个节点指向前一个节点完成两个节点的交换，之后再将交换后的后一个节点指向原本后一个节点的下一个节点。</p>
+<p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B93.png" alt="24.两两交换链表中的节点3"></p>
+<ol>
+<li>解法一：虚拟头节点迭代</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">swapPairs</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        ListNode dummyNode=<span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);<span class="comment">//虚拟头节点</span></span><br><span class="line">        dummyNode.next=head;<span class="comment">//指向head</span></span><br><span class="line">        ListNode pre=dummyNode;<span class="comment">//定义前一节点</span></span><br><span class="line">        <span class="keyword">while</span>(pre.next!=<span class="literal">null</span> &amp;&amp;pre.next.next!=<span class="literal">null</span>)&#123;</span><br><span class="line">            ListNode temp=head.next.next;<span class="comment">//临时节点存储需要交换两个节点的后一个节点</span></span><br><span class="line">            pre.next=head.next;<span class="comment">//虚拟头节点指向后一个节点</span></span><br><span class="line">            head.next.next=head;<span class="comment">//后一个节点指向前一个节点，完成两个节点交换</span></span><br><span class="line">            head.next=temp;<span class="comment">//交换后的另一个节点指向临时节点</span></span><br><span class="line">            pre=head;<span class="comment">//更新pre</span></span><br><span class="line">            head=head.next;<span class="comment">//更新head</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummyNode.next;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>解法二：递归</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递归版本</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">swapPairs</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        <span class="comment">// base case 退出提交</span></span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        <span class="comment">// 获取当前节点的下一个节点</span></span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">next</span> <span class="operator">=</span> head.next;</span><br><span class="line">        <span class="comment">// 进行递归</span></span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">newNode</span> <span class="operator">=</span> swapPairs(next.next);</span><br><span class="line">        <span class="comment">// 这里进行交换</span></span><br><span class="line">        next.next = head;</span><br><span class="line">        head.next = newNode;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-13-：19：删除倒数第n个节点（双指针）"><a href="#2022-9-13-：19：删除倒数第n个节点（双指针）" class="headerlink" title="2022.9.13 ：19：删除倒数第n个节点（双指针）"></a>2022.9.13 ：19：删除倒数第n个节点（双指针）</h4><p><a href="./problems/0019.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E8%8A%82%E7%82%B9.md">链表：删除链表的倒数第 N 个结点</a></p>
+<p>定义快慢两个指针，使两个指针相距n个节点，当快指针fast指到空时，慢指针slow的位置即是需要删除的节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">removeNthFromEnd</span><span class="params">(ListNode head, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">        ListNode dummyNode=<span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        dummyNode.next=head;<span class="comment">//虚拟头节点</span></span><br><span class="line">        ListNode slow=dummyNode;</span><br><span class="line">        ListNode fast=dummyNode;<span class="comment">//定义指针</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n+<span class="number">1</span>;i++)&#123;</span><br><span class="line">            fast=fast.next;<span class="comment">//快指针先走n+1（慢指针需要指到需要删除节点的前一个）</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(fast!=<span class="literal">null</span>)&#123;</span><br><span class="line">            fast=fast.next;</span><br><span class="line">            slow=slow.next;<span class="comment">//快慢指针同时移动，直到快指针为空时慢指针就能指到需要删除节点的前一个节点。</span></span><br><span class="line">        &#125;</span><br><span class="line">        slow.next=slow.next.next;<span class="comment">//删除节点。</span></span><br><span class="line">        <span class="keyword">return</span> dummyNode.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/p3.png" alt="img" style="zoom: 50%;" />
+
+<h4 id="2022-9-14-：面试题02-07：链表相交（双指针）"><a href="#2022-9-14-：面试题02-07：链表相交（双指针）" class="headerlink" title="2022.9.14 ：面试题02.07：链表相交（双指针）"></a>2022.9.14 ：面试题02.07：链表相交（双指针）</h4><p><a href="./problems/%E9%9D%A2%E8%AF%95%E9%A2%9802.07.%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4.md">链表：链表相交</a></p>
+<p>思路：定义两个指针，求两个链表的长度，计算差值，长的链表的指针需要先走差值步将末尾对齐，之后进行遍历指向相同节点就返回。</p>
+<p>解法：双指针</p>
+<p>1. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(headA==<span class="literal">null</span>||headB==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//定义指针</span></span><br><span class="line">        ListNode curA=headA;</span><br><span class="line">        ListNode curB=headB;</span><br><span class="line">        <span class="type">int</span> lenA=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> lenB=<span class="number">0</span>;</span><br><span class="line">        <span class="comment">//求长度</span></span><br><span class="line">        <span class="keyword">while</span>(curA!=<span class="literal">null</span>)&#123;</span><br><span class="line">            curA=curA.next;</span><br><span class="line">             lenA++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//求长度</span></span><br><span class="line">        <span class="keyword">while</span>(curB!=<span class="literal">null</span>)&#123;</span><br><span class="line">            curB=curB.next;</span><br><span class="line">            lenB++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//计算出长度后重置指针</span></span><br><span class="line">        curA=headA;</span><br><span class="line">        curB=headB;</span><br><span class="line">        <span class="comment">//求差值</span></span><br><span class="line">        <span class="type">int</span> sub=lenA-lenB;</span><br><span class="line">        <span class="comment">//如果A链表长则A链表先走sub</span></span><br><span class="line">        <span class="keyword">if</span>(sub&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(sub&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                curA=curA.next;</span><br><span class="line">                sub--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="comment">////如果B链表长则B链表先走sub</span></span><br><span class="line">            <span class="keyword">if</span>(sub&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">while</span>(sub&lt;<span class="number">0</span>)&#123;</span><br><span class="line">                    curB=curB.next;</span><br><span class="line">                    sub++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//同时遍历链表，相同则返回节点</span></span><br><span class="line">            <span class="keyword">while</span>(curB!=<span class="literal">null</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(curA==curB)&#123;</span><br><span class="line">                    <span class="keyword">return</span> curA;</span><br><span class="line">                &#125;</span><br><span class="line">                curA=curA.next;</span><br><span class="line">                curB=curB.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">pA</span> <span class="operator">=</span> headA, pB = headB;</span><br><span class="line">        <span class="keyword">while</span> (pA != pB) &#123;</span><br><span class="line">            pA = pA == <span class="literal">null</span> ? headB : pA.next;</span><br><span class="line">            pB = pB == <span class="literal">null</span> ? headA : pB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-15-209-长度最小子数组（滑动窗口）"><a href="#2022-9-15-209-长度最小子数组（滑动窗口）" class="headerlink" title="2022.9.15 : 209: 长度最小子数组（滑动窗口）"></a>2022.9.15 : 209: 长度最小子数组（滑动窗口）</h4><p><a href="./problems/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.md">数组：滑动窗口拯救了你</a></p>
+<p>思路：定义一个外层for循坏控制滑动窗口的end，当子数组sum&gt;target时用一个内层while循坏计算子数组长度length来和result比较，如果length&lt;result将result赋值为length，之后再更新滑动窗口的begin。（外层for循坏控制end，内层while循坏控制begin）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> begin=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> length=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> result=Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> end=<span class="number">0</span>;end&lt;nums.length;end++)&#123;</span><br><span class="line">            sum+=nums[end];<span class="comment">//控制滑动窗口终止位置并子数组计算和</span></span><br><span class="line">            <span class="keyword">while</span>(sum&gt;=target)&#123;</span><br><span class="line">                length=end-begin+<span class="number">1</span>;<span class="comment">//计算子数组长度</span></span><br><span class="line">                result=length&lt;result?length:result;与length比result小就为result赋值length</span><br><span class="line">                sum-=nums[begin++];<span class="comment">//控制滑动窗口终止并计算子数组和</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result==Integer.MAX_VALUE?<span class="number">0</span>:result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-16：142-环形链表（快慢指针）"><a href="#2022-9-16：142-环形链表（快慢指针）" class="headerlink" title="2022.9.16：142.环形链表（快慢指针）"></a>2022.9.16：142.环形链表（快慢指针）</h4><p><a href="./problems/0142.%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8II.md">链表：环找到了，那入口呢？</a></p>
+<p> 思路：</p>
+<ol>
+<li><p>寻找是否有环：定义快慢指针，如果两个指针相遇说明有环。</p>
+</li>
+<li><p>寻找环的入口：如果有环，定义两个索引，一个为快慢指针相遇的地方，一个为头节点，当两个索引相遇的地方就是环的入口。</p>
+<img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/008eGmZEly1goo58gauidg30fw0bi4qr.gif" style="zoom: 80%;" /></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">detectCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        ListNode slow=head;<span class="comment">//定义两个指针</span></span><br><span class="line">        ListNode fast=head;</span><br><span class="line">        <span class="keyword">while</span>(fast!=<span class="literal">null</span>&amp;&amp;fast.next!=<span class="literal">null</span>)&#123;</span><br><span class="line">            fast=fast.next.next;<span class="comment">//移动快指针</span></span><br><span class="line">            slow=slow.next;<span class="comment">//移动慢指针</span></span><br><span class="line">            <span class="keyword">if</span>(fast==slow)&#123;<span class="comment">//快慢指针相遇说明有环</span></span><br><span class="line">               ListNode index1=fast;<span class="comment">//新指针代表快慢指针重合位置</span></span><br><span class="line">               ListNode index2=head;<span class="comment">//第二个指针重置为头节点</span></span><br><span class="line">                <span class="keyword">while</span>(index1!=index2)&#123;<span class="comment">//两个index相遇的地方即为环的入口</span></span><br><span class="line">                    index1=index1.next;<span class="comment">//移动</span></span><br><span class="line">                    index2=index2.next;<span class="comment">//移动</span></span><br><span class="line">                &#125; </span><br><span class="line">                <span class="keyword">return</span> index1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-17：-204-有效的字母异位词（判断两个数组是否是顺序打乱的同一个数组，哈希数组）"><a href="#2022-9-17：-204-有效的字母异位词（判断两个数组是否是顺序打乱的同一个数组，哈希数组）" class="headerlink" title="2022.9.17： 204.有效的字母异位词（判断两个数组是否是顺序打乱的同一个数组，哈希数组）"></a>2022.9.17： 204.有效的字母异位词（判断两个数组是否是顺序打乱的同一个数组，哈希数组）</h4><p><a href="./problems/0242.%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D.md">哈希表：可以拿数组当哈希表来用，但哈希值不要太大</a></p>
+<p>思路：</p>
+<ol>
+<li>定义一个长度为26的数组record（装下26个字母）</li>
+<li>分别遍历两个数组，遍历第一个数组时出现某个字母就在其相应的索引+1，第二个数组出现就-1；</li>
+<li>遍历record，如果其中有一个数不为0则返回false；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isAnagram</span><span class="params">(String s, String t)</span> &#123;</span><br><span class="line">       <span class="type">int</span>[] record=<span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];<span class="comment">//定义数组</span></span><br><span class="line">       <span class="keyword">for</span>(<span class="type">char</span> c: s.toCharArray())&#123;</span><br><span class="line">           record[c-<span class="string">&#x27;a&#x27;</span>]+=<span class="number">1</span>;<span class="comment">//遍历第一个数组（26个字符的编码是连续的）</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">char</span> c: t.toCharArray())&#123;</span><br><span class="line">           record[c-<span class="string">&#x27;a&#x27;</span>]-=<span class="number">1</span>;<span class="comment">//遍历第二个数组</span></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> a :record)&#123;</span><br><span class="line">           <span class="keyword">if</span>(a!=<span class="number">0</span>)&#123;</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//遍历record是否元素都为0</span></span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-18-：2404-出现最频繁的偶数（哈希数组）"><a href="#2022-9-18-：2404-出现最频繁的偶数（哈希数组）" class="headerlink" title="2022.9.18 ：2404 出现最频繁的偶数（哈希数组）"></a>2022.9.18 ：2404 出现最频繁的偶数（哈希数组）</h4><p>思路：</p>
+<ol>
+<li>定义一个数组record</li>
+<li>遍历题目数组，当元素出现时将record的对应索引+1；</li>
+<li>寻找record数组元素最大值的索引；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">mostFrequentEven</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(nums==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span>[] record=<span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">100000</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> a:nums)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a%<span class="number">2</span>==<span class="number">0</span>)&#123;</span><br><span class="line">                record[a]+=<span class="number">1</span>;<span class="comment">//遍历数组，建立哈希表</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> res=-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;record.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(record[i]&gt;max)&#123;<span class="comment">//遍历哈希表得到元素最大值的索引</span></span><br><span class="line">                max=record[i];</span><br><span class="line">                 res=i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res==-<span class="number">1</span>?-<span class="number">1</span>:res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-19：1002：查找共用字符（数组哈希）"><a href="#2022-9-19：1002：查找共用字符（数组哈希）" class="headerlink" title="2022.9.19：1002：查找共用字符（数组哈希）"></a>2022.9.19：1002：查找共用字符（数组哈希）</h4><p><a href="./problems/1002.%E6%9F%A5%E6%89%BE%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6.md">哈希表：查找常用字符</a></p>
+<p>思路：</p>
+<ol>
+<li>创建哈希数组hush记录字符数组第一个字符每个字母出现次数。，容量为26（26的小写字母）。</li>
+<li>创建另一个哈希数组otherhush记录除第一个外的每个字符的字母出现次数，并在循坏中遍历两个hush表每个字母出现的次数取小值更新到hush表中。</li>
+<li>遍历hush表，当值不为0时将其对应的字母加入到集合result中并更新值-1.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;String&gt; <span class="title function_">commonChars</span><span class="params">(String[] words)</span> &#123;</span><br><span class="line">        List&lt;String&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(words.length==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> result;<span class="comment">//数组为空直接返回</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span>[] hush=<span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];<span class="comment">//定义数组hush</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;words[<span class="number">0</span>].length();i++)&#123;</span><br><span class="line">            hush[words[<span class="number">0</span>].charAt(i)-<span class="string">&#x27;a&#x27;</span>]++;<span class="comment">//遍历字符数组第一个字符每个字母出现次数</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;words.length;i++)&#123;</span><br><span class="line">            <span class="type">int</span>[] otherhush=<span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">26</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;words[i].length();j++)&#123;</span><br><span class="line">                otherhush[words[i].charAt(j)-<span class="string">&#x27;a&#x27;</span>]++;<span class="comment">//循坏遍历其余字符每个字母的出现次数，并记录在otherhush中</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;<span class="number">26</span>;k++)&#123;</span><br><span class="line">                hush[k]=Math.min(hush[k],otherhush[k]);<span class="comment">//循坏遍历hush和otherhush取每个字母出现的最小值赋值到hush，这个最小值即是每个字符输出的次数。</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;hush.length;i++)&#123;</span><br><span class="line">           <span class="keyword">while</span>(hush[i]!=<span class="number">0</span>)&#123;</span><br><span class="line">               <span class="type">char</span> c=(<span class="type">char</span>) (i+<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">               result.add(String.valueOf(c));</span><br><span class="line">               hush[i]--;<span class="comment">//将每个hush索引对应的字符加入result集合（字符对应的数字是多少加入多少个字符）。</span></span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-20-：202-：快乐数（hashset）"><a href="#2022-9-20-：202-：快乐数（hashset）" class="headerlink" title="2022.9.20 ：202 ：快乐数（hashset）"></a>2022.9.20 ：202 ：快乐数（hashset）</h4><p><a href="./problems/0202.%E5%BF%AB%E4%B9%90%E6%95%B0.md">哈希表：用set来判断快乐数</a></p>
+<p>快乐数：快乐数（happy number）有以下的特性：在给定的进位制下，该数字所有数位(digits)的平方和，得到的新数再次求所有数位的平方和，如此重复进行，最终结果必定为1。（每位数的平方和得到一个数后重复，最后为1即为快乐数）</p>
+<p>思路：</p>
+<ol>
+<li>创建hushSet记录每次循环得到的数字。</li>
+<li>while循环计算每位数的平方和result，并更新下次循环的n为result，当n&#x3D;1或者n重复时停止循环。</li>
+<li>最后返回n是否为1；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isHappy</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        Set&lt;Integer&gt; record = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();<span class="comment">//创建hash表</span></span><br><span class="line">       	<span class="comment">//当n=1或者n重复时停止循环</span></span><br><span class="line">        <span class="keyword">while</span>(n!=<span class="number">1</span> &amp;&amp; !record.contains(n))&#123;</span><br><span class="line">            record.add(n);<span class="comment">//每次得到的n记录到hash表中</span></span><br><span class="line">            <span class="type">int</span> result=<span class="number">0</span>;<span class="comment">//每次循环都初始化result</span></span><br><span class="line">            <span class="comment">//计算数字每位数的平方和</span></span><br><span class="line">            <span class="keyword">while</span>(n&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="type">int</span> temp=n%<span class="number">10</span>;</span><br><span class="line">                result+=temp*temp;</span><br><span class="line">                n/=<span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            n=result;<span class="comment">//更新下次循环的n值</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> n==<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-21-：349-寻找数组交集-HashSet"><a href="#2022-9-21-：349-寻找数组交集-HashSet" class="headerlink" title="2022.9.21 ：349 寻找数组交集(HashSet)"></a>2022.9.21 ：349 寻找数组交集(HashSet)</h4><p>思路：</p>
+<ol>
+<li>创建两个hashSet表 set1，set2，set1记录第一个数组出现的数字，set2记录两个数组共同字符。</li>
+<li>遍历第一个数组并将元素添加到set1中。（set会自动去重）</li>
+<li>遍历第二个数组并判断元素是否在set1中存在，如果存在，就将该元素加入set2，最后将set转为数组输出。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] intersection(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2) &#123;</span><br><span class="line">       <span class="keyword">if</span>(nums1 == <span class="literal">null</span> || nums2 == <span class="literal">null</span> || nums1.length==<span class="number">0</span> || nums2.length==<span class="number">0</span>)&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">       &#125;</span><br><span class="line">   	<span class="comment">//定义两个hashset</span></span><br><span class="line">       Set&lt;Integer&gt; set1=<span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">       Set&lt;Integer&gt; set2=<span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">   	<span class="comment">//遍历第一个数组，将元素添加到set1中</span></span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;nums1.length; i++)&#123;</span><br><span class="line">           set1.add(nums1[i]);</span><br><span class="line">       &#125;</span><br><span class="line">   	<span class="comment">//遍历第二个数组，如果当前元素出现在set1中则将该元素添加到set2中</span></span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;nums2.length ;i++)&#123;</span><br><span class="line">           <span class="keyword">if</span>(set1.contains(nums2[i]))&#123;</span><br><span class="line">               set2.add(nums2[i]);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   	<span class="comment">//将set2转化为数组后返回</span></span><br><span class="line">       <span class="keyword">return</span> set2.stream().mapToInt(x -&gt; x).toArray();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-22-：1-：两数之和（HashMap）"><a href="#2022-9-22-：1-：两数之和（HashMap）" class="headerlink" title="2022.9.22 ：1 ：两数之和（HashMap）"></a>2022.9.22 ：1 ：两数之和（HashMap）</h4><p>思路：</p>
+<ol>
+<li>创建一个容量为2的数组来装结果，再创建一个HashMap表来记录遍历过的数组，key为元素值，value为该元素索引。</li>
+<li>遍历数组，记录下当前元素i与目标和target的差为temp。</li>
+<li>如果map中含有temp，则将i和temp对应的value索引赋值给result，如果没有则将该元素的值和索引记录到map中。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">    	<span class="comment">//创建一个数组一个hashmap</span></span><br><span class="line">        <span class="type">int</span>[] result=<span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">2</span>];</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(nums.length==<span class="number">0</span>||nums==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125; </span><br><span class="line">    	<span class="comment">//遍历数组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="comment">//记录元素与target的差值</span></span><br><span class="line">            <span class="type">int</span> temp=target-nums[i];</span><br><span class="line">            <span class="comment">//map含有这个差值就向result里面将索引赋值进去</span></span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(temp))&#123;</span><br><span class="line">                result[<span class="number">1</span>]=i;</span><br><span class="line">                result[<span class="number">0</span>]=map.get(temp);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//将元素值和索引都加入到map表里面</span></span><br><span class="line">                map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2022-9-23-：454：四数相加（判断四个数组中元素有多少种组合相加为0）"><a href="#2022-9-23-：454：四数相加（判断四个数组中元素有多少种组合相加为0）" class="headerlink" title="2022.9.23 ：454：四数相加（判断四个数组中元素有多少种组合相加为0）"></a>2022.9.23 ：454：四数相加（判断四个数组中元素有多少种组合相加为0）</h4><p>思路：</p>
+<ol>
+<li>创建一个hashmap表记录前俩个数组的sum（key）和这个sum出现的次数（value）。</li>
+<li>双重for遍历前两个数组，将两个数组的和sum以及这个sum出现的次数存入map表中。</li>
+<li>双重for循环遍历后俩个数组，计算目标元素target（0-(nums3[i]+nums4[j])），到map表中寻找是否存在这个元素，有就将这个元素出现的次数加到count中，返回count即可。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fourSumCount</span><span class="params">(<span class="type">int</span>[] nums1, <span class="type">int</span>[] nums2, <span class="type">int</span>[] nums3, <span class="type">int</span>[] nums4)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span><span class="number">0</span>;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    	<span class="comment">//双重for循环将前两个数组的和以及个数记录到map中。</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums1.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;nums1.length;j++)&#123;</span><br><span class="line">                <span class="type">int</span> sum=nums1[i]+nums2[j];</span><br><span class="line">                <span class="comment">//判断sum是否存在</span></span><br><span class="line">                <span class="keyword">if</span>(map.containsKey(sum))&#123;</span><br><span class="line">                    <span class="comment">//存在使value+1</span></span><br><span class="line">                    map.put(sum,map.get(sum)+<span class="number">1</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">//不存在记录到map中。</span></span><br><span class="line">                    map.put(sum,<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    	<span class="comment">//双重for循环遍历后两个数组，计算target值后到map中寻找是否target</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;nums3.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;nums3.length;j++)&#123;</span><br><span class="line">                <span class="type">int</span> target=<span class="number">0</span>-(nums3[i]+nums4[j]);</span><br><span class="line">                <span class="keyword">if</span>(map.containsKey(target))&#123;</span><br><span class="line">                    <span class="comment">//如果存在将value加入到count中</span></span><br><span class="line">                    count+=map.get(target);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 
       
 
@@ -203,6 +308,16 @@
                   <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
                     
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/wepay.png">
+                      <span class="reward-type">微信</span>
+                    </div>
                     
                   </div>
                 </span>
@@ -266,7 +381,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/09/23/hello-world/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/09/24/LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -278,6 +393,20 @@
 </article>
 
   
+<nav id="article-nav">
+  
+    <a href="/2022/09/24/%E6%9C%AA%E5%91%BD%E5%90%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -315,7 +444,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2022 John Doe
+    		&copy; 2022 bairi
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
