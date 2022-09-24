@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   
+  <meta name="referrer" content="no-referrer" />
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
   <title>bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="LeetCode刷题记录2022.9.11：206.反转链表（递归，迭代）链表：听说过两天反转链表又写不出来了？  反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。  解法1：双指针法：  1234567">
+  <meta name="description" content="LeetCode刷题记录自2022.9.11—？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bairi的博客">
 <meta property="og:url" content="http://example.com/2022/09/24/LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="bairi的博客">
-<meta property="og:description" content="LeetCode刷题记录2022.9.11：206.反转链表（递归，迭代）链表：听说过两天反转链表又写不出来了？  反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。  解法1：双指针法：  1234567">
+<meta property="og:description" content="LeetCode刷题记录自2022.9.11—？">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B93.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/p3.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/008eGmZEly1goo58gauidg30fw0bi4qr.gif">
 <meta property="article:published_time" content="2022-09-24T04:50:12.279Z">
-<meta property="article:modified_time" content="2022-09-24T05:53:23.965Z">
+<meta property="article:modified_time" content="2022-09-24T13:01:12.879Z">
 <meta property="article:author" content="bairi">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B93.png">
@@ -65,6 +66,8 @@
 	        
 				<li><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 	        
+				<li><a href="/archives/index.html">归档</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -94,6 +97,12 @@
 					<a class="mail" target="_blank" href="mailto:2742697343@qq.com" title="mail"><i class="icon-mail"></i></a>
 		        
 			</div>
+			<!-- 网易云音乐插件 -->
+
+    <div style="position:absolute; bottom:120px left:auto; width:85%">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=250 height=86 src="//music.163.com/outchain/player?type=2&id=26093064&auto=1&height=66"></iframe>
+    </div>
+
 		</nav>
 	</header>		
 </div>
@@ -121,6 +130,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -138,12 +149,14 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 33.333333333333336%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/archives/index.html">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -158,12 +171,17 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-LeetCode刷题记录" class="article article-type-post " itemscope itemprop="blogPost">
+            
+
+<article id="post-LeetCode刷题记录" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="LeetCode刷题记录"><a href="#LeetCode刷题记录" class="headerlink" title="LeetCode刷题记录"></a>LeetCode刷题记录</h1><h4 id="2022-9-11：206-反转链表（递归，迭代）"><a href="#2022-9-11：206-反转链表（递归，迭代）" class="headerlink" title="2022.9.11：206.反转链表（递归，迭代）"></a>2022.9.11：206.反转链表（递归，迭代）</h4><p><a href="./problems/0206.%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8.md">链表：听说过两天反转链表又写不出来了？</a> </p>
+        <h1 id="LeetCode刷题记录"><a href="#LeetCode刷题记录" class="headerlink" title="LeetCode刷题记录"></a>LeetCode刷题记录</h1><p>自2022.9.11—？</p>
+<span id="more"></span>
+
+<h4 id="2022-9-11：206-反转链表（递归，迭代）"><a href="#2022-9-11：206-反转链表（递归，迭代）" class="headerlink" title="2022.9.11：206.反转链表（递归，迭代）"></a>2022.9.11：206.反转链表（递归，迭代）</h4><p><a href="./problems/0206.%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8.md">链表：听说过两天反转链表又写不出来了？</a> </p>
 <p>反转链表需要找到链表前一个节点pre和当前节点cur以及一个临时节点temp来记录cur指针的下一个指针（因为反转链表需要将cur.next改变会丢失原本cur指针的next），然后将cur的下个指针更改为pre，最后再更新cur和pre的值。</p>
 <ol>
 <li>解法1：双指针法：</li>
@@ -381,7 +399,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/09/24/LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dzy2003.github.io/022/09/24/LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -395,11 +413,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/09/24/%E6%9C%AA%E5%91%BD%E5%90%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/09/24/%E7%BD%AE%E9%A1%B6/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          (no title)
+          置顶
         
       </div>
     </a>
@@ -421,6 +439,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LeetCode%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">LeetCode刷题记录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-11%EF%BC%9A206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%EF%BC%88%E9%80%92%E5%BD%92%EF%BC%8C%E8%BF%AD%E4%BB%A3%EF%BC%89"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">2022.9.11：206.反转链表（递归，迭代）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-12-%EF%BC%9A-24-%EF%BC%9A%E9%93%BE%E8%A1%A8%E4%B8%A4%E4%B8%A4%E5%8F%8D%E8%BD%AC%EF%BC%88%E8%BF%AD%E4%BB%A3%EF%BC%89"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">2022.9.12 ： 24 ：链表两两反转（迭代）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-13-%EF%BC%9A19%EF%BC%9A%E5%88%A0%E9%99%A4%E5%80%92%E6%95%B0%E7%AC%ACn%E4%B8%AA%E8%8A%82%E7%82%B9%EF%BC%88%E5%8F%8C%E6%8C%87%E9%92%88%EF%BC%89"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">2022.9.13 ：19：删除倒数第n个节点（双指针）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-14-%EF%BC%9A%E9%9D%A2%E8%AF%95%E9%A2%9802-07%EF%BC%9A%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%EF%BC%88%E5%8F%8C%E6%8C%87%E9%92%88%EF%BC%89"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">2022.9.14 ：面试题02.07：链表相交（双指针）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-15-209-%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E5%AD%90%E6%95%B0%E7%BB%84%EF%BC%88%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%89"><span class="toc-number">1.0.0.5.</span> <span class="toc-text">2022.9.15 : 209: 长度最小子数组（滑动窗口）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-16%EF%BC%9A142-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8%EF%BC%88%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%EF%BC%89"><span class="toc-number">1.0.0.6.</span> <span class="toc-text">2022.9.16：142.环形链表（快慢指针）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-17%EF%BC%9A-204-%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D%EF%BC%88%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E6%98%AF%E5%90%A6%E6%98%AF%E9%A1%BA%E5%BA%8F%E6%89%93%E4%B9%B1%E7%9A%84%E5%90%8C%E4%B8%80%E4%B8%AA%E6%95%B0%E7%BB%84%EF%BC%8C%E5%93%88%E5%B8%8C%E6%95%B0%E7%BB%84%EF%BC%89"><span class="toc-number">1.0.0.7.</span> <span class="toc-text">2022.9.17： 204.有效的字母异位词（判断两个数组是否是顺序打乱的同一个数组，哈希数组）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-18-%EF%BC%9A2404-%E5%87%BA%E7%8E%B0%E6%9C%80%E9%A2%91%E7%B9%81%E7%9A%84%E5%81%B6%E6%95%B0%EF%BC%88%E5%93%88%E5%B8%8C%E6%95%B0%E7%BB%84%EF%BC%89"><span class="toc-number">1.0.0.8.</span> <span class="toc-text">2022.9.18 ：2404 出现最频繁的偶数（哈希数组）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-19%EF%BC%9A1002%EF%BC%9A%E6%9F%A5%E6%89%BE%E5%85%B1%E7%94%A8%E5%AD%97%E7%AC%A6%EF%BC%88%E6%95%B0%E7%BB%84%E5%93%88%E5%B8%8C%EF%BC%89"><span class="toc-number">1.0.0.9.</span> <span class="toc-text">2022.9.19：1002：查找共用字符（数组哈希）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-20-%EF%BC%9A202-%EF%BC%9A%E5%BF%AB%E4%B9%90%E6%95%B0%EF%BC%88hashset%EF%BC%89"><span class="toc-number">1.0.0.10.</span> <span class="toc-text">2022.9.20 ：202 ：快乐数（hashset）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-21-%EF%BC%9A349-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E4%BA%A4%E9%9B%86-HashSet"><span class="toc-number">1.0.0.11.</span> <span class="toc-text">2022.9.21 ：349 寻找数组交集(HashSet)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-22-%EF%BC%9A1-%EF%BC%9A%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%EF%BC%88HashMap%EF%BC%89"><span class="toc-number">1.0.0.12.</span> <span class="toc-text">2022.9.22 ：1 ：两数之和（HashMap）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2022-9-23-%EF%BC%9A454%EF%BC%9A%E5%9B%9B%E6%95%B0%E7%9B%B8%E5%8A%A0%EF%BC%88%E5%88%A4%E6%96%AD%E5%9B%9B%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E5%85%83%E7%B4%A0%E6%9C%89%E5%A4%9A%E5%B0%91%E7%A7%8D%E7%BB%84%E5%90%88%E7%9B%B8%E5%8A%A0%E4%B8%BA0%EF%BC%89"><span class="toc-number">1.0.0.13.</span> <span class="toc-text">2022.9.23 ：454：四数相加（判断四个数组中元素有多少种组合相加为0）</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -436,6 +467,9 @@
 
   
 
+      
+     
+
 
           </div>
         </div>
@@ -447,11 +481,25 @@
     		&copy; 2022 bairi
     	</div>
       	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+    
+    
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      		<span id="busuanzi_container_site_pv">
+                本站总访问量：<span id="busuanzi_value_site_pv"></span>次
+            </span>
+            <span class="post-meta-divider">|</span>
+            <span id="busuanzi_container_site_uv">
+                本站访客数：<span id="busuanzi_value_site_uv"></span>人
+            </span>
+    
+    
       	</div>
     </div>
   </div>
 </footer>
+
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
     </div>
     <script>
 	var yiliaConfig = {
@@ -525,6 +573,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
@@ -576,26 +628,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           
             <li class="search-li">
               <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
             </li>
           
         </ul>
