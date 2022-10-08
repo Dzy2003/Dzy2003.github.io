@@ -7,26 +7,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>mysql数据库事务和存储引擎 | bairi的博客</title>
+  <title>04 Linux常用命令 | bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="mysql中事务与引擎笔记">
+  <meta name="description" content="记录常用的Linux指令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql数据库事务和存储引擎">
-<meta property="og:url" content="http://example.com/2022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/index.html">
+<meta property="og:title" content="04 Linux常用命令">
+<meta property="og:url" content="http://example.com/2022/10/08/04%20Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="bairi的博客">
-<meta property="og:description" content="mysql中事务与引擎笔记">
+<meta property="og:description" content="记录常用的Linux指令">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:\Users\soga\AppData\Roaming\Typora\typora-user-images\image-20220919113440630.png">
-<meta property="og:image" content="http://example.com/2022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6.assets/image-20220920114822812.png">
-<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6.assets/image-20220920121259618.png">
-<meta property="og:image" content="http://example.com/2022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6.assets/image-20220920122136133.png">
-<meta property="og:image" content="http://example.com/2022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6.assets/image-20220920122302815.png">
-<meta property="article:published_time" content="2022-09-25T03:15:23.145Z">
-<meta property="article:modified_time" content="2022-09-25T03:35:30.001Z">
+<meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20220927194824777.png">
+<meta property="article:published_time" content="2022-10-08T03:33:20.104Z">
+<meta property="article:modified_time" content="2022-10-08T03:43:27.731Z">
 <meta property="article:author" content="bairi">
-<meta property="article:tag" content="笔记 mysql">
+<meta property="article:tag" content="笔记 Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:\Users\soga\AppData\Roaming\Typora\typora-user-images\image-20220919113440630.png">
+<meta name="twitter:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20220927194824777.png">
   
     <link rel="alternative" href="/atom.xml" title="bairi的博客" type="application/atom+xml">
   
@@ -179,113 +175,159 @@
           <div id="js-content" class="content-ll">
             
 
-<article id="post-01 事务和引擎" class="article article-type-post " itemscope itemprop="blogPost">
+<article id="post-04 Linux常用命令" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      mysql数据库事务和存储引擎
+      04 Linux常用命令
     </h1>
   
 
         
-        <a href="/2022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/" class="archive-article-date">
-  	<time datetime="2022-09-25T03:15:23.145Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-25</time>
+        <a href="/2022/10/08/04%20Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="archive-article-date">
+  	<time datetime="2022-10-08T03:33:20.104Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-08</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>mysql中事务与引擎笔记</p>
+        <p>记录常用的Linux指令</p>
 <span id="more"></span>
 
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>事务是一组操作的集合，它是一个不可分割的工作单位，事务会把所以操作作为一个整体一起向系统提交或撤销操作请求，这些操作<strong>要么同时成功，要么同时失败</strong>。</p>
-<p>例如银行转账，登录取款机后即<strong>开始事务</strong>，如果取款过程中出现问题即<strong>回滚事务</strong>撤销之前的操作，取款动作全部完成后就<strong>提交事务</strong>。</p>
-<h3 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h3><h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>银行转账（转1000）：</p>
-<ol>
-<li>查询账户余额。</li>
-<li>转账方余额-1000.</li>
-<li>收款方余额+1000.</li>
-</ol>
-<p>上述过程中如果2~3中程序出现异常后3将不能正常运行，则会出现转账方余额减少而收款方余额不变的情况，这明显是不对的。</p>
-<p>此时应当将整个过程视为一个<strong>事务</strong>即可解决 </p>
-<h4 id="事务操作基本指令"><a href="#事务操作基本指令" class="headerlink" title="事务操作基本指令"></a>事务操作基本指令</h4><blockquote>
-<p>select @@autocommit 查询事务提交方式手动（0）还是自动（1），数据库默认为自动提交</p>
-<p>set @@autocommit  设置提交方式。</p>
-<p>commit 提交事务。</p>
-<p>rollback 回滚事务。</p>
-<p>begin 开启事务 如果不更改为手动提交事务可以使用这个指令实现事务操作。<strong>开启事务就代表手动提交事务</strong>。</p>
+<h1 id="Linux指令"><a href="#Linux指令" class="headerlink" title="Linux指令"></a>Linux指令</h1><h2 id="帮助指令"><a href="#帮助指令" class="headerlink" title="帮助指令"></a>帮助指令</h2><blockquote>
+<p>man [命令或配置文件]       —-获取帮助信息</p>
+<p>help        –获取shell内置指令的帮助信息</p>
 </blockquote>
-<h4 id="事务操作过程"><a href="#事务操作过程" class="headerlink" title="事务操作过程"></a>事务操作过程</h4><ol>
-<li>set @@autocommit 设置事务提交为<strong>手动提交</strong>。（也可以使用begin开启事务同样代表手动提交事务）。</li>
-<li>如果程序正常运行则执行commit提交事务。</li>
-<li>如果程序异常则执行rollback回滚事务。</li>
-</ol>
-<h3 id="事务四大特性-ACID"><a href="#事务四大特性-ACID" class="headerlink" title="事务四大特性(ACID)"></a>事务四大特性(ACID)</h3><ul>
-<li><p>原子性(Atomicity)：事务中的全部操作在数据库中是不可分割的，要么全部完成，要么均不执行。</p>
-</li>
-<li><p>一致性(Consistency)：几个并行执行的事务，其执行结果必须与按某一顺序串行执行的结果相一致。</p>
-</li>
-<li><p>隔离性(Isolation)：事务的执行不受其他事务的干扰，事务执行的中间结果对其他事务必须是透明的。</p>
-</li>
-<li><p>持久性(Durability)：对于任意已提交事务，系统必须保证该事务对数据库的改变不被丢失，即使数据库出现故障。</p>
-</li>
-</ul>
-<h3 id="并发事务问题"><a href="#并发事务问题" class="headerlink" title="并发事务问题"></a>并发事务问题</h3><p>A事务和B事务同时操作某一个数据库或某一张表时引发的问题</p>
-<p><strong>脏读（Dirty read）:</strong> 当一个事务正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事务也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据，那么另外一个事务读到的这个数据是“脏数据”，依据“脏数据”所做的操作可能是不正确的。（<strong>一个事务读到另一个事务没有提交的数据</strong>）</p>
-<p><strong>丢失修改（Lost to modify）:</strong> 指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。例如：事务1读取某表中的数据A&#x3D;20，事务2也读取A&#x3D;20，事务1修改A&#x3D;A-1，事务2也修改A&#x3D;A-1，最终结果A&#x3D;19，事务1的修改被丢失。</p>
-<p><strong>不可重复读（Unrepeatableread）:</strong> 指在一个事务内多次读同一数据。在这个事务还没有结束时，另一个事务也访问该数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改导致第一个事务两次读取的数据可能不太一样。这就发生了在一个事务内两次读到的数据是不一样的情况，因此称为不可重复读。（<strong>一个事务先后读取同一条数据，但两次读的数据不同</strong>）</p>
-<p><strong>幻读（Phantom read）:</strong> 幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录，就好像发生了幻觉一样，所以称为幻读。</p>
-<p>解决：事务隔离级别。</p>
-<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>解决并发事务问题</p>
-<h4 id="四种隔离级别"><a href="#四种隔离级别" class="headerlink" title="四种隔离级别"></a>四种隔离级别</h4><img src="C:\Users\soga\AppData\Roaming\Typora\typora-user-images\image-20220919113440630.png" alt="image-20220919113440630" style="zoom:80%;" />
-
+<h2 id="文件目录类"><a href="#文件目录类" class="headerlink" title="文件目录类"></a>文件目录类</h2><h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h3><p><strong>显示当前工作目录的绝对路径</strong></p>
+<h3 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h3><p><strong>切换目录</strong></p>
 <blockquote>
-<p>select @@TRANSACTION_ISOLATION         查看事务隔离级别</p>
-<p>set [session|global] transaction isolation lever[隔离级别]   设置事务隔离级别  </p>
+<p>cd [参数]    –切换到指定目录 （支持相对路径和绝对路径）</p>
+<p>cd ~      —回到自己的家目录</p>
+<p>cd ..     –回到当前目录的当前目录</p>
 </blockquote>
-<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><h3 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h3><h4 id="连接层"><a href="#连接层" class="headerlink" title="连接层"></a>连接层</h4><p>主要负责连接管理、授权认证、安全等等。每个客户端连接都对应着服务器上的一个线程。服务器上维护了一个线程池，避免为每个连接都创建销毁一个线程。当客户端连接到MySQL服务器时，服务器对其进行认证。可以通过用户名与密码认证，也可以通过SSL证书进行认证。登录认证后，服务器还会验证客户端是否有执行某个查询的操作权限。这一层并不是MySQL所特有的技术。</p>
-<p>####服务层</p>
-<p> 第二层服务层是MySQL的核心，MySQL的核心服务层都在这一层，查询解析，SQL执行计划分析，SQL执行计划优化，查询缓存。以及跨存储引擎的功能都在这一层实现：存储过程，触发器，视图等。</p>
-<h4 id="引擎层"><a href="#引擎层" class="headerlink" title="引擎层"></a>引擎层</h4><p>负责MySQL中数据的存储与提取。 服务器中的查询执行引擎通过API与存储引擎进行通信，通过接口屏蔽了不同存储引擎之间的差异。MySQL采用插件式的存储引擎。MySQL为我们提供了许多存储引擎，每种存储引擎有不同的特点。我们可以根据不同的业务特点，选择最适合的存储引擎。如果对于存储引擎的性能不满意，可以通过修改源码来得到自己想要达到的性能。</p>
-<h4 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h4><p>存储数据库相关信息。</p>
-<img src="数据库进阶.assets/image-20220920114822812.png" alt="image-20220920114822812" style="zoom:50%;" />
-
-<h3 id="存储引擎简介"><a href="#存储引擎简介" class="headerlink" title="存储引擎简介"></a>存储引擎简介</h3><p>存储数据是存储数据、建立索引，更新&#x2F;查询数据等技术的实现方式，不同的表可以使用不同的存储引擎。</p>
-<p>MySQL默认引擎为InnoDB。</p>
-<p>创建表时指定引擎</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">engine =（引擎名）   指定引擎</span><br><span class="line">show engines 查看数据支持的存储引擎</span><br></pre></td></tr></table></figure>
-
-<h3 id="存储引擎特点"><a href="#存储引擎特点" class="headerlink" title="存储引擎特点"></a>存储引擎特点</h3><h4 id="innoDB（MySQL目前默认引擎）"><a href="#innoDB（MySQL目前默认引擎）" class="headerlink" title="innoDB（MySQL目前默认引擎）"></a>innoDB（MySQL目前默认引擎）</h4><p>兼具可靠性和高性能的通用存储引擎。</p>
-<h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><ul>
-<li>支持事务</li>
-<li>行级锁，提高并发访问性能</li>
-<li>支持外键约束，保证数据的完整性和正确性。</li>
-</ul>
-<h5 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h5><p>xxx.ibd:xxx代表表名，存储表的结构，数据和索引。</p>
-<h5 id="逻辑存储结构"><a href="#逻辑存储结构" class="headerlink" title="逻辑存储结构"></a>逻辑存储结构</h5><p><img src="/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6.assets/image-20220920121259618.png" alt="image-20220920121259618"></p>
-<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><h5 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h5><ul>
-<li>不支持事务，不支持外键</li>
-<li>支持表锁，不支持行锁</li>
-<li>访问速度快</li>
-</ul>
-<h5 id="文件-1"><a href="#文件-1" class="headerlink" title="文件"></a>文件</h5><ul>
-<li>xxx. sdi :存储表结构信息</li>
-<li>xxx.MYD:存储数据</li>
-<li>xxx.MYI 存储引擎</li>
-</ul>
-<h4 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h4><p>Memory 引擎的表数据存储在内存中，只能将这些表作为临时表或缓存使用。</p>
-<h5 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h5><ul>
-<li>存放在内存中</li>
-<li>hush索引</li>
-</ul>
-<h5 id="文件-2"><a href="#文件-2" class="headerlink" title="文件"></a>文件</h5><p>xxx.sdi 存储表结构信息。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><img src="数据库进阶.assets/image-20220920122136133.png" alt="image-20220920122136133" style="zoom:67%;" />
-
-<h4 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h4><img src="数据库进阶.assets/image-20220920122302815.png" alt="image-20220920122302815" style="zoom: 67%;" />
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h3><p><strong>创建目录</strong></p>
+<blockquote>
+<p>mkdir  [目录名]   —-创建指定目录（默认只能创建一级目录）</p>
+<p>mkdir -p [目录名]    —-可以创建多级目录</p>
+</blockquote>
+<h3 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir"></a>rmdir</h3><p><strong>删除目录</strong></p>
+<blockquote>
+<p>rmdir [目录名]     –删除指定空目录（只能删除空目录）</p>
+<p>rm -rf [ 目录名]       –删除指定非空目录（删库跑路）</p>
+</blockquote>
+<h3 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h3><p><strong>创建空文件</strong></p>
+<blockquote>
+<p>touch [文件名称]    —-创建一个空文件</p>
+</blockquote>
+<h3 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h3><p><strong>拷贝文件</strong></p>
+<blockquote>
+<p>cp[选项] [拷贝对象] [指定目录]    —-拷贝文件到指定文件</p>
+</blockquote>
+<p>常用选项    -r     递归拷贝整个目录</p>
+<h3 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h3><p><strong>删除目录或文件</strong></p>
+<blockquote>
+<p>rm [选项]  [指定目录或文件]    删除目录或文件</p>
+</blockquote>
+<h3 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h3><p><strong>移动文件与目录或重命名</strong></p>
+<blockquote>
+<p>mv [需要重命名的文件]  [重命名后的名字]    ——重命名</p>
+<p>mv [需要移动的文件]   [指定目录]      —–移动文件</p>
+</blockquote>
+<h3 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h3><p><strong>查看文件</strong></p>
+<blockquote>
+<p>cat   [要查看的文件]</p>
+</blockquote>
+<p>-n 显示行数</p>
+<p><strong>cat只能浏览文件，而不能修改文件，为了浏览方便，一般会带上 管道命令|more</strong></p>
+<h3 id="less"><a href="#less" class="headerlink" title="less"></a>less</h3><p><strong>查看文件内容</strong></p>
+<p>less查看内容时，并不是一次将整个文件加载后再显示，而是根据显示加载内容，对于显示大文件具有较高效率</p>
+<blockquote>
+<p>less [要查看的文件]</p>
+</blockquote>
+<p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20220927194824777.png" alt="image-20220927194824777"></p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><strong>输出内容到控制台</strong></p>
+<blockquote>
+<p>echo [输出内容]      —输出内容</p>
+</blockquote>
+<h3 id="head"><a href="#head" class="headerlink" title="head"></a>head</h3><p><strong>用于显示文件的开头部分</strong>，默认情况下head指令显示文件的前10行内容</p>
+<blockquote>
+<p>head [文件]     —-查看文件头10行内容</p>
+<p>head -n 5 [文件]     —–查看文件头5行内容</p>
+</blockquote>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h3><p>用于显示文件末尾部分，默认 显示最后10行</p>
+<blockquote>
+<p>tail [文件]     —-查看文件末尾10行内容</p>
+<p>tail -n 5 [文件]     —–查看文件末尾5行内容</p>
+</blockquote>
+<h3 id="gt-和-gt-gt"><a href="#gt-和-gt-gt" class="headerlink" title="&gt;和&gt;&gt;"></a>&gt;和&gt;&gt;</h3><p><strong>&gt;为输出重定向   &gt;&gt;为追加</strong></p>
+<blockquote>
+<p>ls -l &gt; [文件]       —–列表的内容写入文件中（覆盖写）</p>
+<p>ls -l &gt;&gt; [文件]	—–列表的内容追加到文件的末尾中</p>
+<p>cat [文件1]  [文件2]   	——-将文件1的内容全部写入文件2</p>
+<p>echo “内容” &gt;&gt; [文件]   	—–将内容追加到文件中</p>
+</blockquote>
+<h3 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h3><p>软连接也成为符号连接，<strong>类似于windows里的快捷方式</strong>，主要存放了链接其他文件的路径</p>
+<blockquote>
+<p>ln -s [原文件或目录] [软链接名]  —-给原文件创建一个软链接</p>
+</blockquote>
+<p>使用cd &#x2F; 进入创建的软链接后就会进入创建软链接时指定的目录或文件</p>
+<h3 id="history"><a href="#history" class="headerlink" title="history"></a>history</h3><p><strong>查看已经执行的历史命令</strong></p>
+<blockquote>
+<p>history    10   —–显示最近的10条指令</p>
+<p>！5  —-执行历史编号为5的指令</p>
+</blockquote>
+<h2 id="时间日期指令"><a href="#时间日期指令" class="headerlink" title="时间日期指令"></a>时间日期指令</h2><h3 id="date"><a href="#date" class="headerlink" title="date"></a>date</h3><p><strong>显示当前日期</strong></p>
+<blockquote>
+<p>date      —–显示当前时间</p>
+<p>date +%Y       —-显示年</p>
+<p>date +%m      —-显示月</p>
+<p>date +%d       —-显示日</p>
+<p>date  “+%Y-%m-%d %H:%M:%S”       —–显示年月日时分秒</p>
+</blockquote>
+<p><strong>设置日期</strong></p>
+<blockquote>
+<p>date -s   “2022-9-29 16:2:10”[当前时间]</p>
+</blockquote>
+<h3 id="cal"><a href="#cal" class="headerlink" title="cal"></a>cal</h3><p><strong>显示日历</strong></p>
+<blockquote>
+<p>cal   显示当前日历</p>
+<p>cal  [年份]    这年全部日历</p>
+</blockquote>
+<h2 id="搜索查找类"><a href="#搜索查找类" class="headerlink" title="搜索查找类"></a>搜索查找类</h2><h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><p><strong>递归查找各个子目录，将满足条件的文件或目录显示在终端</strong></p>
+<blockquote>
+<p>find &#x2F;home[搜索范围] -name[查询方式]  hello.txt[文件名]     —-根据文件名查找文件    寻找用户名所有的文件  -[user]</p>
+</blockquote>
+<h3 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h3><p><strong>本地创建数据库快速定位文件</strong></p>
+<p><strong>第一次运行前必须进行updatedb将目录结构记录到数据库中</strong></p>
+<blockquote>
+<p>locate [搜索文件]</p>
+</blockquote>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p><strong>过滤查找，管道符”|”，表锁&#x3D;&#x3D;表示将前一个指令的结果传递给后面的命令处理。</strong></p>
+<blockquote>
+<p>cat hello.txt[文件]| grep “hello”[查找内容]       ——    查找文件中的”hello字符”</p>
+</blockquote>
+<h2 id="压缩和解压类"><a href="#压缩和解压类" class="headerlink" title="压缩和解压类"></a>压缩和解压类</h2><h3 id="gzip-x2F-gunzip"><a href="#gzip-x2F-gunzip" class="headerlink" title="gzip&#x2F;gunzip"></a>gzip&#x2F;gunzip</h3><p><strong>gzip用于压缩文件，gunzip用于解压</strong></p>
+<blockquote>
+<p>gzip [文件]   —–压缩文件，只能将文件压缩为*.gz文件*</p>
+<p>gunzip [文件.gz]      ——解压压缩文件</p>
+</blockquote>
+<h3 id="zip-x2F-unzip"><a href="#zip-x2F-unzip" class="headerlink" title="zip&#x2F;unzip"></a>zip&#x2F;unzip</h3><p><strong>zip用于压缩文件，unzip用于解压，压缩目录一般用于项目打包</strong>，</p>
+<blockquote>
+<p>zip [选项] [文件.zip] [想要压缩的内容]</p>
+<p>unzip [选项] [文件.zip]</p>
+</blockquote>
+<p>常用选项：-r：递归压缩，即压缩目录</p>
+<p>-d：指定解压后的文件存放目录，不指定则存放到当前所在目录</p>
+<h3 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h3><p><strong>tar是打包命令，可以打包文件也可以打包文件夹</strong></p>
+<blockquote>
+<p>tar [选项]  xxx.tar.gz[压缩后的压缩包名字]  [打包的内容]</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf log.tar log2012.log            <span class="comment"># 仅打包，不压缩</span></span><br><span class="line">tar -zcvf log.tar.gz log2012.log        <span class="comment"># 打包后，以 gzip 压缩</span></span><br><span class="line">tar -jcvf log.tar.bz2 log2012.log       <span class="comment"># 打包后，以 bzip2 压缩</span></span><br><span class="line"></span><br><span class="line">tar -ztvf log.tar.gz                    <span class="comment"># 查阅上述 tar 包内有哪些文件</span></span><br><span class="line">tar -zxvf log.tar.gz                    <span class="comment"># 将 tar 包解压缩</span></span><br><span class="line">tar -zxvf log30.tar.gz log2013.log      <span class="comment"># 只将 tar 内的部分文件解压出来</span></span><br></pre></td></tr></table></figure>
 
 
       
@@ -331,7 +373,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 Linux</a>
         		</li>
       		
 		</ul>
@@ -387,7 +429,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dzy2003.github.io/022/09/25/01%20%E4%BA%8B%E5%8A%A1%E5%92%8C%E5%BC%95%E6%93%8E/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://dzy2003.github.io/022/10/08/04%20Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -401,18 +443,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/10/08/01%20Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/10/08/05%20Linux%E7%BB%84%E7%9A%84%E4%BB%8B%E7%BB%8D/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          01 Linux目录结构
+          05 Linux组的介绍
         
       </div>
     </a>
   
   
-    <a href="/2022/09/25/%E5%AD%A6%E7%94%9F%E6%88%90%E7%BB%A9%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">学生成绩管理系统</div>
+    <a href="/2022/10/08/03%20Linux%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">03 Linux用户管理</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -439,7 +481,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.</span> <span class="toc-text">事务操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">举例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.2.</span> <span class="toc-text">事务操作基本指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%93%8D%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.3.</span> <span class="toc-text">事务操作过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7-ACID"><span class="toc-number">1.2.</span> <span class="toc-text">事务四大特性(ACID)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E4%BA%8B%E5%8A%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.</span> <span class="toc-text">并发事务问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">1.4.</span> <span class="toc-text">事务隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-number">1.4.1.</span> <span class="toc-text">四种隔离级别</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-number">2.</span> <span class="toc-text">存储引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">MySQL体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="toc-number">2.1.1.</span> <span class="toc-text">连接层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E6%93%8E%E5%B1%82"><span class="toc-number">2.1.2.</span> <span class="toc-text">引擎层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%B1%82"><span class="toc-number">2.1.3.</span> <span class="toc-text">存储层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%AE%80%E4%BB%8B"><span class="toc-number">2.2.</span> <span class="toc-text">存储引擎简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%89%B9%E7%82%B9"><span class="toc-number">2.3.</span> <span class="toc-text">存储引擎特点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#innoDB%EF%BC%88MySQL%E7%9B%AE%E5%89%8D%E9%BB%98%E8%AE%A4%E5%BC%95%E6%93%8E%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">innoDB（MySQL目前默认引擎）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">逻辑存储结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyISAM"><span class="toc-number">2.3.2.</span> <span class="toc-text">MyISAM</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%89%B9%E7%82%B9-1"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6-1"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">文件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memory"><span class="toc-number">2.3.3.</span> <span class="toc-text">Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%89%B9%E7%82%B9-2"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6-2"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">文件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.3.4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9"><span class="toc-number">2.3.5.</span> <span class="toc-text">选择</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E6%8C%87%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Linux指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%AE%E5%8A%A9%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">帮助指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">文件目录类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pwd"><span class="toc-number">1.2.1.</span> <span class="toc-text">pwd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cd"><span class="toc-number">1.2.2.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mkdir"><span class="toc-number">1.2.3.</span> <span class="toc-text">mkdir</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rmdir"><span class="toc-number">1.2.4.</span> <span class="toc-text">rmdir</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#touch"><span class="toc-number">1.2.5.</span> <span class="toc-text">touch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cp"><span class="toc-number">1.2.6.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rm"><span class="toc-number">1.2.7.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mv"><span class="toc-number">1.2.8.</span> <span class="toc-text">mv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cat"><span class="toc-number">1.2.9.</span> <span class="toc-text">cat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#less"><span class="toc-number">1.2.10.</span> <span class="toc-text">less</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#echo"><span class="toc-number">1.2.11.</span> <span class="toc-text">echo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#head"><span class="toc-number">1.2.12.</span> <span class="toc-text">head</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tail"><span class="toc-number">1.2.13.</span> <span class="toc-text">tail</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gt-%E5%92%8C-gt-gt"><span class="toc-number">1.2.14.</span> <span class="toc-text">&gt;和&gt;&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ln"><span class="toc-number">1.2.15.</span> <span class="toc-text">ln</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#history"><span class="toc-number">1.2.16.</span> <span class="toc-text">history</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">时间日期指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#date"><span class="toc-number">1.3.1.</span> <span class="toc-text">date</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cal"><span class="toc-number">1.3.2.</span> <span class="toc-text">cal</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E6%9F%A5%E6%89%BE%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">搜索查找类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#find"><span class="toc-number">1.4.1.</span> <span class="toc-text">find</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#locate"><span class="toc-number">1.4.2.</span> <span class="toc-text">locate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#grep"><span class="toc-number">1.4.3.</span> <span class="toc-text">grep</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B%E7%B1%BB"><span class="toc-number">1.5.</span> <span class="toc-text">压缩和解压类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gzip-x2F-gunzip"><span class="toc-number">1.5.1.</span> <span class="toc-text">gzip&#x2F;gunzip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zip-x2F-unzip"><span class="toc-number">1.5.2.</span> <span class="toc-text">zip&#x2F;unzip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar"><span class="toc-number">1.5.3.</span> <span class="toc-text">tar</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
