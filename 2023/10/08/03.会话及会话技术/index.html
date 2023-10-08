@@ -9,12 +9,12 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>03.会话及会话技术 | bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="会话及会话技术的简要介绍 会话及会话技术当用户通过浏览器访问Web应用时，通常情况下，服务器需要对用户的状态进行跟踪。例如，用户在网站结算商品时，Web服务器必须根据请求用户的身份，找到该用户所购买的商品。在Web开发中，服务器跟踪用户信息的技术称为会话技术。 会话的概念在日常生活中，从拨通电话到挂断电话之间的一连串的你问我答的过程就是一个会话。在打电话过程中，通话双方会有通话内容，同样，在客户端">
+  <meta name="description" content="会话及会话技术的简要介绍">
 <meta property="og:type" content="article">
 <meta property="og:title" content="03.会话及会话技术">
 <meta property="og:url" content="http://example.com/2023/10/08/03.%E4%BC%9A%E8%AF%9D%E5%8F%8A%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="bairi的博客">
-<meta property="og:description" content="会话及会话技术的简要介绍 会话及会话技术当用户通过浏览器访问Web应用时，通常情况下，服务器需要对用户的状态进行跟踪。例如，用户在网站结算商品时，Web服务器必须根据请求用户的身份，找到该用户所购买的商品。在Web开发中，服务器跟踪用户信息的技术称为会话技术。 会话的概念在日常生活中，从拨通电话到挂断电话之间的一连串的你问我答的过程就是一个会话。在打电话过程中，通话双方会有通话内容，同样，在客户端">
+<meta property="og:description" content="会话及会话技术的简要介绍">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230404085247120.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230404091844127.png">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230411091849053.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230413142124880.png">
 <meta property="article:published_time" content="2023-10-08T06:12:24.228Z">
-<meta property="article:modified_time" content="2023-09-19T02:21:55.013Z">
+<meta property="article:modified_time" content="2023-10-08T06:47:38.656Z">
 <meta property="article:author" content="bairi">
 <meta property="article:tag" content="笔记 javaWeb">
 <meta name="twitter:card" content="summary">
@@ -74,7 +74,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 71
+                     总文章数 73
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -200,6 +200,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>会话及会话技术的简要介绍</p>
+<span id="more"></span>
+
 <h1 id="会话及会话技术"><a href="#会话及会话技术" class="headerlink" title="会话及会话技术"></a>会话及会话技术</h1><p>当用户通过浏览器访问Web应用时，通常情况下，服务器需要对用户的状态进行跟踪。例如，用户在网站结算商品时，Web服务器必须根据请求用户的身份，找到该用户所购买的商品。在Web开发中，服务器跟踪用户信息的技术称为会话技术。</p>
 <h2 id="会话的概念"><a href="#会话的概念" class="headerlink" title="会话的概念"></a>会话的概念</h2><p>在日常生活中，从拨通电话到挂断电话之间的一连串的你问我答的过程就是一个会话。在打电话过程中，通话双方会有通话内容，同样，在客户端与服务器交互的过程中，也会产生一些数据。例如，用户甲和乙分别登录了购物网站，甲购买了一个iPhone手机，乙购买了一个iPad，当这两个用户结账时，Web服务器需要对用户甲和乙的信息分别进行保存。为了保存会话过程中产生的数据，Servlet提供了两个用于保存会话数据的对象，分别是<strong>Cookie</strong>和<strong>Session</strong>。</p>
 <h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>Cookie是存在与客户端的会话技术。</p>
@@ -539,15 +541,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -563,11 +561,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -583,19 +585,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 python 可视化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
             
             <div class="clearfix"></div>

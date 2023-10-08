@@ -21,7 +21,6 @@
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132010279.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132153979.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132435047.png">
-<meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132404629.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803133236965.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803133404059.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803134135074.png">
@@ -31,7 +30,7 @@
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803153500440.png">
 <meta property="og:image" content="c:/Users/soga/AppData/Roaming/Typora/typora-user-images/image-20230804124251506.png">
 <meta property="article:published_time" content="2023-10-08T06:31:58.211Z">
-<meta property="article:modified_time" content="2023-10-08T06:25:14.979Z">
+<meta property="article:modified_time" content="2023-10-08T06:47:59.583Z">
 <meta property="article:author" content="bairi">
 <meta property="article:tag" content="笔记 redis 项目">
 <meta name="twitter:card" content="summary">
@@ -83,7 +82,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 71
+                     总文章数 73
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -291,7 +290,7 @@
 <p><strong>秒杀卷表</strong></p>
 <p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132435047.png" alt="image-20230803132435047"></p>
 <p><strong>订单表</strong></p>
-<p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230803132404629.png" alt="image-20230803132404629"></p>
+<p>xxxxxxxxxx @PostMapping(“change_avatar”)public R<String> changeAvatar(@RequestParam(“file”) MultipartFile file, HttpSession session) {    &#x2F;&#x2F; 判断上传的文件是否为空    if (file.isEmpty()) {        &#x2F;&#x2F; 是：抛出异常        throw new BusinessException(“上传的头像文件不允许为空”);    }​    &#x2F;&#x2F; 判断上传的文件大小是否超出限制值    if (file.getSize() &gt; AVATAR_MAX_SIZE) { &#x2F;&#x2F; getSize()：返回文件的大小，以字节为单位        &#x2F;&#x2F; 是：抛出异常        throw new BusinessException(“不允许上传超过” + (AVATAR_MAX_SIZE &#x2F; 1024) + “KB的头像文件”);    }​    &#x2F;&#x2F; 判断上传的文件类型是否超出限制    String contentType &#x3D; file.getContentType();    &#x2F;&#x2F; public boolean list.contains(Object o)：当前列表若包含某元素，返回结果为true；若不包含该元素，返回结果为false。    if (!AVATAR_TYPES.contains(contentType)) {        &#x2F;&#x2F; 是：抛出异常        throw new BusinessException(“不支持使用该类型的文件作为头像，允许的文件类型：\n” + AVATAR_TYPES);    }​    &#x2F;&#x2F; 获取当前项目的绝对磁盘路径    String parent &#x3D; session.getServletContext().getRealPath(“upload”);    &#x2F;&#x2F; 保存头像文件的文件夹    File dir &#x3D; new File(parent);    if (!dir.exists()) {        dir.mkdirs();    }​    &#x2F;&#x2F; 保存的头像文件的文件名    String suffix &#x3D; “”;    String originalFilename &#x3D; file.getOriginalFilename();    int beginIndex &#x3D; originalFilename.lastIndexOf(“.”);    if (beginIndex &gt; 0) {        suffix &#x3D; originalFilename.substring(beginIndex);    }    String filename &#x3D; UUID.randomUUID() + suffix;​    &#x2F;&#x2F; 创建文件对象，表示保存的头像文件    File dest &#x3D; new File(dir, filename);    &#x2F;&#x2F; 执行保存头像文件    try {        file.transferTo(dest);    } catch (IllegalStateException e) {        &#x2F;&#x2F; 抛出异常        throw new BusinessException(“文件状态异常，可能文件已被移动或删除”);    } catch (BusinessException e) {        &#x2F;&#x2F; 抛出异常        throw new BusinessException(“上传文件时读写错误，请稍后重尝试”);    } catch (IOException e) {        e.printStackTrace();    }​    &#x2F;&#x2F; 头像路径    String avatar &#x3D;”&#x2F;upload&#x2F;“ + filename;    System.out.println(parent+avatar);    &#x2F;&#x2F; 从Session中获取uid和username    Integer uid &#x3D; (Integer) session.getAttribute(“uid”);    String username &#x3D; session.getAttribute(“username”).toString();    &#x2F;&#x2F; 将头像写入到数据库中    service.changeAvatar(uid, username, avatar);​    &#x2F;&#x2F; 返回成功头像路径    return R.success(avatar);}java</p>
 <p>可以看到库存字段出现了负数，订单数也超过了100。</p>
 <p>可以得出上面的秒杀下单代码出现了<strong>超卖</strong>的现象。</p>
 <h3 id="超卖问题分析"><a href="#超卖问题分析" class="headerlink" title="超卖问题分析"></a>超卖问题分析</h3><p>有关超卖问题分析：在我们原有代码中是这么写的</p>
@@ -657,15 +656,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -681,11 +676,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -701,19 +700,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 python 可视化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
             
             <div class="clearfix"></div>

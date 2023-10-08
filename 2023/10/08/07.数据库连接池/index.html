@@ -9,16 +9,16 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>07.数据库连接池 | bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="数据库连接池的简要介绍 数据库连接池为了解决原生JDBC操作数据库的一些缺陷，出现了数据库连接池技术。 原生JDBC缺陷在JDBC编程中，每次创建和断开Connection对象都会消耗一定的时间和IO资源。在Java程序与数据库之间建立连接时，数据库端要验证用户名和密码，并且要为这个连接分配资源，Java程序则要把代表连接的java.sql.Connection对象等加载到内存中，所以建立数据库连">
+  <meta name="description" content="数据库连接池的简要介绍">
 <meta property="og:type" content="article">
 <meta property="og:title" content="07.数据库连接池">
 <meta property="og:url" content="http://example.com/2023/10/08/07.%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/index.html">
 <meta property="og:site_name" content="bairi的博客">
-<meta property="og:description" content="数据库连接池的简要介绍 数据库连接池为了解决原生JDBC操作数据库的一些缺陷，出现了数据库连接池技术。 原生JDBC缺陷在JDBC编程中，每次创建和断开Connection对象都会消耗一定的时间和IO资源。在Java程序与数据库之间建立连接时，数据库端要验证用户名和密码，并且要为这个连接分配资源，Java程序则要把代表连接的java.sql.Connection对象等加载到内存中，所以建立数据库连">
+<meta property="og:description" content="数据库连接池的简要介绍">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230525145751430.png">
 <meta property="article:published_time" content="2023-10-08T06:12:24.220Z">
-<meta property="article:modified_time" content="2023-09-19T02:24:37.012Z">
+<meta property="article:modified_time" content="2023-10-08T06:48:32.107Z">
 <meta property="article:author" content="bairi">
 <meta property="article:tag" content="笔记 javaWeb">
 <meta name="twitter:card" content="summary">
@@ -70,7 +70,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 71
+                     总文章数 73
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -196,6 +196,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>数据库连接池的简要介绍</p>
+<span id="more"></span>
+
 <h1 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h1><p>为了解决原生JDBC操作数据库的一些缺陷，出现了数据库连接池技术。</p>
 <h2 id="原生JDBC缺陷"><a href="#原生JDBC缺陷" class="headerlink" title="原生JDBC缺陷"></a>原生JDBC缺陷</h2><p>在JDBC编程中，每次创建和断开Connection对象都会消耗一定的时间和IO资源。在Java程序与数据库之间建立连接时，数据库端要验证用户名和密码，并且要为这个连接分配资源，Java程序则要把代表连接的java.sql.Connection对象等加载到内存中，所以建立数据库连接的开销很大，尤其是在大量的并发访问时。</p>
 <h2 id="数据库连接池技术"><a href="#数据库连接池技术" class="headerlink" title="数据库连接池技术"></a>数据库连接池技术</h2><p>为了避免频繁的创建数据库连接，<strong>数据库连接池</strong>技术应运而生。数据库连接池负责分配、管理和释放数据库连接，它允许应用程序重复使用现有的数据库连接，而不是重新建立。简单地说，数据库连接池就是为数据库建立的一个“缓冲池”。预先在“缓冲池”中放入一定数量的连接，当需要建立数据库连接时，只需要从“缓冲池”中取出一个，使用完毕后再放回“缓冲池”即可。</p>
@@ -483,15 +485,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -507,11 +505,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -527,19 +529,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 python 可视化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
             
             <div class="clearfix"></div>

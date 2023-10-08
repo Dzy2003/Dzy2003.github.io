@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230904213154382.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230904215506178.png">
 <meta property="article:published_time" content="2023-10-08T06:11:59.247Z">
-<meta property="article:modified_time" content="2023-10-08T06:10:04.291Z">
+<meta property="article:modified_time" content="2023-10-08T06:47:11.550Z">
 <meta property="article:author" content="bairi">
 <meta property="article:tag" content="笔记 信息的表示和处理">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 71
+                     总文章数 73
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -253,7 +253,7 @@
 <li>b &#x3D; a ^ b;    a &#x3D; a^b, <strong>b &#x3D; a ^ b ^ b &#x3D; a</strong></li>
 <li>a &#x3D; a ^ b ;   <strong>a &#x3D; a ^ b ^ a  &#x3D; b</strong>,  b &#x3D; a</li>
 </ol>
-<p>经过上面的上次异或运算，我们就将变量a和b交换了。</p>
+<p>xxxxxxxxxx package com.duan.Service.ServiceImpl;​import com.duan.Mapper.UserMapper;import com.duan.Service.UserService;import com.duan.entity.User;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.stereotype.Service;import org.springframework.util.DigestUtils;import java.util.Date;import java.util.UUID;​@Servicepublic class UserServiceImpl implements UserService {    @Autowired    UserMapper mapper;    &#x2F;&#x2F;Todo 注册    @Override    public void reg(User user) {​        User user1 &#x3D; mapper.SelectByName(user.getUsername());        if(user1 !&#x3D; null){            &#x2F;&#x2F;抛出用户名被占用异常​        }        Date now &#x3D; new Date();        &#x2F;&#x2F; 补全数据：加密后的密码        String salt &#x3D; UUID.randomUUID().toString().toUpperCase();        String md5Password &#x3D; getMd5Password(user.getPassword(), salt);        user.setPassword(md5Password);        &#x2F;&#x2F; 补全数据：盐值        user.setSalt(salt);        &#x2F;&#x2F; 补全数据：isDelete(0)        user.setIsDelete(0);        &#x2F;&#x2F; 补全数据：4项日志属性        user.setCreatedUser(user.getUsername());        user.setCreatedTime(now);        user.setModifiedUser(user.getUsername());        user.setModifiedTime(now);​        &#x2F;&#x2F; 表示用户名没有被占用，则允许注册        &#x2F;&#x2F; 调用持久层Integer insert(User user)方法，执行注册并获取返回值(受影响的行数)        Integer rows &#x3D; mapper.insert(user);        &#x2F;&#x2F; 判断受影响的行数是否不为1        if (rows !&#x3D; 1) {            &#x2F;&#x2F; 是：插入数据时出现某种错误，则抛出InsertException异常​        }    }    &#x2F;**     * 执行密码加密     * @param password 原始密码     * @param salt 盐值     * @return 加密后的密文     <em>&#x2F;    private String getMd5Password(String password, String salt) {        &#x2F;</em>         * 加密规则：         * 1、无视原始密码的强度         * 2、使用UUID作为盐值，在原始密码的左右两侧拼接         * 3、循环加密3次         *&#x2F;        for (int i &#x3D; 0; i &lt; 3; i++) {            password &#x3D; DigestUtils.md5DigestAsHex((salt + password + salt).getBytes()).toUpperCase();        }        return password;    }}java</p>
 <h3 id="c语言中的逻辑运算"><a href="#c语言中的逻辑运算" class="headerlink" title="c语言中的逻辑运算"></a>c语言中的逻辑运算</h3><p>c语言以及其它语言(java)中，不仅提供了位级运算符(&amp;,|,~,^)，还提供了一组逻辑运算符。</p>
 <ul>
 <li>|| : 对应OR</li>
@@ -561,15 +561,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -585,11 +581,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,19 +605,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 python 可视化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
             
             <div class="clearfix"></div>

@@ -63,7 +63,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 71
+                     总文章数 73
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -167,6 +167,408 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-05.用户收货管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/08/05.%E7%94%A8%E6%88%B7%E6%94%B6%E8%B4%A7%E7%AE%A1%E7%90%86/">05.用户收货管理</a>
+    </h1>
+  
+
+        
+        <a href="/2023/10/08/05.%E7%94%A8%E6%88%B7%E6%94%B6%E8%B4%A7%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2023-10-08T06:03:29.235Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <span id="more"></span>
+
+<h1 id="用户收货管理"><a href="#用户收货管理" class="headerlink" title="用户收货管理"></a>用户收货管理</h1><p>用户收货模块的构建，功能包括：</p>
+<ul>
+<li>增加收货地址</li>
+<li>在用户填写收货地址信息的地址时下拉列表中可以从数据库中查询出各个行政单位。</li>
+<li>显示收货地址列表</li>
+<li>设置默认收货地址</li>
+<li>删除收货地址</li>
+</ul>
+<h2 id="数据库和实体类的创建"><a href="#数据库和实体类的创建" class="headerlink" title="数据库和实体类的创建"></a>数据库和实体类的创建</h2><h3 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a>创建数据表</h3><p>1.使用use命令先选中store数据库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE store;</span><br></pre></td></tr></table></figure>
+
+<p>2.在store数据库中创建t_address用户数据表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t_address (</span><br><span class="line">	aid INT AUTO_INCREMENT COMMENT &#x27;收货地址id&#x27;,</span><br><span class="line">	uid INT COMMENT &#x27;归属的用户id&#x27;,</span><br><span class="line">	name VARCHAR(20) COMMENT &#x27;收货人姓名&#x27;,</span><br><span class="line">	province_name VARCHAR(15) COMMENT &#x27;省-名称&#x27;,</span><br><span class="line">	province_code CHAR(6) COMMENT &#x27;省-行政代号&#x27;,</span><br><span class="line">	city_name VARCHAR(15) COMMENT &#x27;市-名称&#x27;,</span><br><span class="line">	city_code CHAR(6) COMMENT &#x27;市-行政代号&#x27;,</span><br><span class="line">	area_name VARCHAR(15) COMMENT &#x27;区-名称&#x27;,</span><br><span class="line">	area_code CHAR(6) COMMENT &#x27;区-行政代号&#x27;,</span><br><span class="line">	zip CHAR(6) COMMENT &#x27;邮政编码&#x27;,</span><br><span class="line">	address VARCHAR(50) COMMENT &#x27;详细地址&#x27;,</span><br><span class="line">	phone VARCHAR(20) COMMENT &#x27;手机&#x27;,</span><br><span class="line">	tel VARCHAR(20) COMMENT &#x27;固话&#x27;,</span><br><span class="line">	tag VARCHAR(6) COMMENT &#x27;标签&#x27;,</span><br><span class="line">	is_default INT COMMENT &#x27;是否默认：0-不默认，1-默认&#x27;,</span><br><span class="line">	created_user VARCHAR(20) COMMENT &#x27;创建人&#x27;,</span><br><span class="line">	created_time DATETIME COMMENT &#x27;创建时间&#x27;,</span><br><span class="line">	modified_user VARCHAR(20) COMMENT &#x27;修改人&#x27;,</span><br><span class="line">	modified_time DATETIME COMMENT &#x27;修改时间&#x27;,</span><br><span class="line">	PRIMARY KEY (aid)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure>
+
+<p>3.向数据库中导入省&#x2F;市&#x2F;区数据t_dict_district.sql文件，执行以下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; source C:/Users/yuanxin/t_dict_district.sql</span><br></pre></td></tr></table></figure>
+
+<p>4.创建省&#x2F;市&#x2F;区数据的com.cy.store.entity实体类，在类中声明与数据表中对应的属性，添加Getters and Setters方法，基于唯一标识id生成equals()方法及hashCode()和toString()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cy.store.entity;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 省/市/区数据的实体类 */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">District</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String parent;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Generate: Getter and Setter、Generate hashCode() and equals()、toString()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建实体类"><a href="#创建实体类" class="headerlink" title="创建实体类"></a>创建实体类</h3><p>创建com.cy.store.entity.Address新增收获地址的实体类，继承自BaseEntity类，在类中声明与数据表中对应的属性，添加Getters and Setters方法，基于唯一标识aid生成hashCode()和equals()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cy.store.entity;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 收货地址数据的实体类 */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Address</span> <span class="keyword">extends</span> <span class="title class_">BaseEntity</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Integer aid;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String provinceName;</span><br><span class="line">    <span class="keyword">private</span> String provinceCode;</span><br><span class="line">    <span class="keyword">private</span> String cityName;</span><br><span class="line">    <span class="keyword">private</span> String cityCode;</span><br><span class="line">    <span class="keyword">private</span> String areaName;</span><br><span class="line">    <span class="keyword">private</span> String areaCode;</span><br><span class="line">    <span class="keyword">private</span> String zip;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> String tel;</span><br><span class="line">    <span class="keyword">private</span> String tag;</span><br><span class="line">    <span class="keyword">private</span> Integer isDefault;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Generate: Getter and Setter、Generate hashCode() and equals()、toString()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-新增收货地址"><a href="#1-新增收货地址" class="headerlink" title="1.新增收货地址"></a>1.新增收货地址</h2><ul>
+<li>持久层：将前端传入的Adress实体类插入到库表中，若是该用户第一次增加收货地址则可以设为默认地址。</li>
+<li>业务层：将前端数据进行封装以及将异常抛出。</li>
+<li>持久层：调用业务层处理数据。</li>
+</ul>
+<h3 id="持久层"><a href="#持久层" class="headerlink" title="持久层"></a>持久层</h3><h4 id="规划sql语句"><a href="#规划sql语句" class="headerlink" title="规划sql语句"></a>规划sql语句</h4><p>增加收货地址的本质是插入新的收货地址数据，需要执行的SQL语句大致是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO t_address (除了aid以外的字段列表) VALUES (匹配的值列表)</span><br></pre></td></tr></table></figure>
+
+<p>后续在处理业务时，还需要确定“即将增加的收货地址是不是默认收货地址”；可以设定规则“用户的第1条收货地址是默认的，以后添加的每一条都不是默认的”；要应用该规则，就必须知道“即将增加的收货地址是不是第1条”，可以“根据用户id统计收货地址的数量”，如果统计结果为0，则即将增加的就是该用户的第1条收货地址，如果统计结果不是0，则该用户已经有若干条收货地址了，即将增加的就一定不是第1条。关于统计的SQL语句大致是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) FROM t_address WHERE uid=?</span><br></pre></td></tr></table></figure>
+
+<p>一般电商平台都会限制每个用户可以创建的收货地址的数量，如“每个用户最多只允许创建20个收货地址”，也可以通过以上查询来实现。</p>
+<h4 id="mapper接口"><a href="#mapper接口" class="headerlink" title="mapper接口"></a>mapper接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 插入新的收货地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> address 要插入的地址数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Insert(&quot;INSERT INTO t_address (uid, name, province_name, province_code, city_name, city_code, area_name, area_code, zip, address, phone, tel, tag, is_default, created_user, created_time, modified_user, modified_time) VALUES&quot; +</span></span><br><span class="line"><span class="meta">        &quot;( #&#123;uid&#125;, #&#123;name&#125;, #&#123;provinceName&#125;, #&#123;provinceCode&#125;, #&#123;cityName&#125;, #&#123;cityCode&#125;, #&#123;areaName&#125;,\n&quot; +</span></span><br><span class="line"><span class="meta">        &quot;        #&#123;areaCode&#125;, #&#123;zip&#125;, #&#123;address&#125;, #&#123;phone&#125;, #&#123;tel&#125;, #&#123;tag&#125;, #&#123;isDefault&#125;, #&#123;createdUser&#125;,\n&quot; +</span></span><br><span class="line"><span class="meta">        &quot;        #&#123;createdTime&#125;, #&#123;modifiedUser&#125;, #&#123;modifiedTime&#125;)&quot;)</span></span><br><span class="line">Integer <span class="title function_">insert</span><span class="params">(Address address)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据uid查询收货地址个数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 收货地址个数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Select(&quot;SELECT count(*) FROM t_address where uid = #&#123;uid&#125;&quot;)</span></span><br><span class="line">Integer <span class="title function_">accountAddress</span><span class="params">(<span class="meta">@Param(&quot;uid&quot;)</span> Integer uid)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="业务层"><a href="#业务层" class="headerlink" title="业务层"></a>业务层</h3><h4 id="异常规划"><a href="#异常规划" class="headerlink" title="异常规划"></a>异常规划</h4><ul>
+<li>收货数量达到上限</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(count == maxCount)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;\&quot;收货地址数量已经达到上限(\&quot; + maxCount + \&quot;)！\&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>插入数据时系统异常导致添加失败</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mapper.insert(address) != <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">SystemException</span>(<span class="string">&quot;添加收货地址异常&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建新的收货地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid 当前登录的用户的id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> username 当前登录的用户名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> address 用户提交的收货地址数据</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">addAddress</span><span class="params">(Address address,Integer uid, String username)</span> <span class="keyword">throws</span> UnsupportedEncodingException;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addAddress</span><span class="params">(Address address,Integer uid, String username)</span> <span class="keyword">throws</span> UnsupportedEncodingException &#123;</span><br><span class="line">    <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> mapper.accountAddress(uid);</span><br><span class="line">    <span class="keyword">if</span>(count == maxCount)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;\&quot;收货地址数量已经达到上限(\&quot; + maxCount + \&quot;)！\&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    address.setName(URLDecoder.decode(address.getName(),<span class="string">&quot;UTF-8&quot;</span>));<span class="comment">//将中文url解码，可能会抛出UnsupportedEncodingException异常;</span></span><br><span class="line">    address.setTag(URLDecoder.decode(address.getTag(),<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">    address.setAddress(URLDecoder.decode(address.getAddress(),<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">    address.setIsDefault(count == <span class="number">0</span> ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">provinceName</span> <span class="operator">=</span> districtService.GetNameByCode(address.getProvinceCode());</span><br><span class="line">    <span class="type">String</span> <span class="variable">cityName</span> <span class="operator">=</span> districtService.GetNameByCode(address.getCityCode());</span><br><span class="line">    <span class="type">String</span> <span class="variable">areaName</span> <span class="operator">=</span> districtService.GetNameByCode(address.getCityCode());</span><br><span class="line">    <span class="type">Date</span> <span class="variable">now</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">    <span class="comment">//封装address对象</span></span><br><span class="line">    address.setProvinceName(provinceName);</span><br><span class="line">    address.setCityName(cityName);</span><br><span class="line">    address.setAreaName(areaName);</span><br><span class="line">    address.setUid(uid);</span><br><span class="line">    address.setCreatedUser(username);</span><br><span class="line">    address.setCreatedTime(now);</span><br><span class="line">    address.setModifiedUser(username);</span><br><span class="line">    address.setModifiedTime(now);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(mapper.insert(address) != <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">SystemException</span>(<span class="string">&quot;添加收货地址异常&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="控制层"><a href="#控制层" class="headerlink" title="控制层"></a>控制层</h3><h4 id="设计请求-RESTful"><a href="#设计请求-RESTful" class="headerlink" title="设计请求(RESTful)"></a>设计请求(RESTful)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">请求路径：/addresses</span><br><span class="line">请求参数：Address address, HttpSession session</span><br><span class="line">请求类型：POST</span><br><span class="line">响应结果：R&lt;Void&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="处理请求"><a href="#处理请求" class="headerlink" title="处理请求"></a>处理请求</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping()</span></span><br><span class="line"><span class="keyword">public</span> R&lt;Void&gt; <span class="title function_">addNewAddress</span><span class="params">(<span class="meta">@RequestBody</span> Address address, HttpSession session)</span> &#123;</span><br><span class="line">    <span class="type">Integer</span> <span class="variable">uid</span> <span class="operator">=</span> Integer.valueOf(session.getAttribute(<span class="string">&quot;uid&quot;</span>).toString());</span><br><span class="line">    <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span>  session.getAttribute(<span class="string">&quot;username&quot;</span>).toString();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        addressService.addAddress(address, uid, username);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> R.success(<span class="literal">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端页面"><a href="#前端页面" class="headerlink" title="前端页面"></a>前端页面</h3><p>添加script脚本：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&quot;#btn-add-new-address&quot;</span>).<span class="title function_">click</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> jsonData = &#123;&#125;</span><br><span class="line">   <span class="keyword">var</span> serializeStr = $(<span class="string">&quot;#form-add-new-address&quot;</span>).<span class="title function_">serialize</span>();</span><br><span class="line">   <span class="keyword">var</span> array = serializeStr.<span class="title function_">split</span>(<span class="string">&quot;&amp;&quot;</span>);</span><br><span class="line">   $(array).<span class="title function_">each</span>(<span class="keyword">function</span> (<span class="params">i</span>) &#123;</span><br><span class="line">      jsonData[array[i].<span class="title function_">split</span>(<span class="string">&quot;=&quot;</span>)[<span class="number">0</span>]] = array[i].<span class="title function_">split</span>(<span class="string">&quot;=&quot;</span>)[<span class="number">1</span>];</span><br><span class="line">   &#125;)</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(jsonData)</span><br><span class="line">   $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">      <span class="attr">url</span>: <span class="string">&quot;/addresses&quot;</span>,</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">      <span class="attr">data</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(jsonData),</span><br><span class="line">      <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">      <span class="attr">contentType</span>:<span class="string">&quot;application/json;charset=UTF-8&quot;</span>,</span><br><span class="line">      <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">json</span>) &#123;</span><br><span class="line">         <span class="keyword">if</span> (json.<span class="property">code</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="title function_">alert</span>(<span class="string">&quot;新增收货地址成功！&quot;</span>);</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="title function_">alert</span>(<span class="string">&quot;新增收货地址失败！&quot;</span> + json.<span class="property">msg</span>);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">error</span>: <span class="keyword">function</span>(<span class="params">xhr</span>) &#123;</span><br><span class="line">         <span class="title function_">alert</span>(<span class="string">&quot;您的登录信息已经过期，请重新登录！HTTP响应码：&quot;</span> + xhr.<span class="property">status</span>);</span><br><span class="line">         location.<span class="property">href</span> = <span class="string">&quot;login.html&quot;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-获取省-x2F-市-x2F-区的列表"><a href="#2-获取省-x2F-市-x2F-区的列表" class="headerlink" title="2.获取省&#x2F;市&#x2F;区的列表"></a>2.获取省&#x2F;市&#x2F;区的列表</h2><ul>
+<li>持久层：通过前端传入的父级代号获取子级的所有数据项。</li>
+<li>业务层：向持久层传入父级代号parent，并获取返回数据</li>
+<li>获取业务层的数据传入前端。</li>
+</ul>
+<h3 id="持久层-1"><a href="#持久层-1" class="headerlink" title="持久层"></a>持久层</h3><h4 id="规划sql语句-1"><a href="#规划sql语句-1" class="headerlink" title="规划sql语句"></a>规划sql语句</h4><p>获取全国所有省&#x2F;某省所有市&#x2F;某市所有区的查询SQL语句大致是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_dict_district where parent=? order by code ASC;</span><br></pre></td></tr></table></figure>
+
+<h4 id="mapper接口-1"><a href="#mapper接口-1" class="headerlink" title="mapper接口"></a>mapper接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Select(&quot;SELECT * FROM t_dict_district WHERE parent = #&#123;parent&#125; ORDER BY code ASC&quot;)</span></span><br><span class="line">List&lt;District&gt; <span class="title function_">selectByParent</span><span class="params">(<span class="meta">@Param(&quot;parent&quot;)</span> String parent)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="业务层-1"><a href="#业务层-1" class="headerlink" title="业务层"></a>业务层</h3><h4 id="异常规划-1"><a href="#异常规划-1" class="headerlink" title="异常规划"></a>异常规划</h4><blockquote>
+<p>无异常</p>
+</blockquote>
+<h4 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;District&gt; <span class="title function_">getByParent</span><span class="params">(String parent)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> List&lt;District&gt; <span class="title function_">getByParent</span><span class="params">(String parent)</span> &#123;</span><br><span class="line">    List&lt;District&gt; list = mapper.selectByParent(parent);</span><br><span class="line">    <span class="keyword">for</span> (District district : list) &#123;</span><br><span class="line">        district.setId(<span class="literal">null</span>);</span><br><span class="line">        district.setParent(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="控制层-1"><a href="#控制层-1" class="headerlink" title="控制层"></a>控制层</h3><h4 id="设计请求"><a href="#设计请求" class="headerlink" title="设计请求"></a>设计请求</h4><p>设计用户提交的请求，并设计响应的方式。</p>
+<pre><code>请求路径：/districts/
+请求参数：String parent
+请求类型：GET
+响应结果：R&lt;List&lt;District&gt;&gt;
+是否拦截：否，需要在拦截器的配置中添加白名单
+</code></pre>
+<h4 id="处理请求-1"><a href="#处理请求-1" class="headerlink" title="处理请求"></a>处理请求</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/&#123;parent&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> R&lt;List&lt;District&gt;&gt; <span class="title function_">getByDistrict</span><span class="params">(<span class="meta">@PathVariable(&quot;parent&quot;)</span> String parent)</span>&#123;</span><br><span class="line">    List&lt;District&gt; list = service.getByParent(parent);</span><br><span class="line">    <span class="keyword">return</span> R.success(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-获取省-x2F-市-x2F-区的名称"><a href="#3-获取省-x2F-市-x2F-区的名称" class="headerlink" title="3.获取省&#x2F;市&#x2F;区的名称"></a>3.获取省&#x2F;市&#x2F;区的名称</h2><p>此功能模块主要实现根据省&#x2F;市&#x2F;区的行政代号获取省&#x2F;市&#x2F;区的名称。主要为在添加收货地址时下拉列表中获取到名称。</p>
+<h3 id="持久层-2"><a href="#持久层-2" class="headerlink" title="持久层"></a>持久层</h3><h4 id="规划SQL语句"><a href="#规划SQL语句" class="headerlink" title="规划SQL语句"></a>规划SQL语句</h4><p>根据省&#x2F;市&#x2F;区的行政代号获取省&#x2F;市&#x2F;区的名称，需要执行的SQL语句大致是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name from t_dict_district where code=?</span><br></pre></td></tr></table></figure>
+
+<h4 id="mapper接口-2"><a href="#mapper接口-2" class="headerlink" title="mapper接口"></a>mapper接口</h4><p>在DistrictMapper接口中添加根据省&#x2F;市&#x2F;区的行政代号获取省&#x2F;市&#x2F;区的名称selectNameByCode(String code)抽象方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据code行政代号查询名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> code 城市的行政代号</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 城市名称</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Select(&quot;SELECT name FROM t_dict_district WHERE code = #&#123;code&#125;&quot;)</span></span><br><span class="line">String <span class="title function_">selectNameByCode</span><span class="params">(<span class="meta">@Param(&quot;code&quot;)</span> String code)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="业务层-2"><a href="#业务层-2" class="headerlink" title="业务层"></a>业务层</h3><h4 id="规划异常"><a href="#规划异常" class="headerlink" title="规划异常"></a>规划异常</h4><blockquote>
+<p>无异常</p>
+</blockquote>
+<h4 id="接口-2"><a href="#接口-2" class="headerlink" title="接口"></a>接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过编号获取行政单位的名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> code</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">String <span class="title function_">GetNameByCode</span><span class="params">(String code)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">GetNameByCode</span><span class="params">(String code)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> mapper.selectNameByCode(code);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-设置默认收货地址"><a href="#4-设置默认收货地址" class="headerlink" title="4.设置默认收货地址"></a>4.设置默认收货地址</h2><ul>
+<li>持久层：根据aid查询数据；将表中所有地址设为非默认；根据aid更新为默认地址。</li>
+<li>业务层：检查传入的aid是否存在于表中，再将表中所有的地址都设为非默认，将用户传入的收货地址设为默认。</li>
+<li>控制层：调用业务层后返回前端数据。</li>
+</ul>
+<h3 id="持久层-3"><a href="#持久层-3" class="headerlink" title="持久层"></a>持久层</h3><h4 id="规划SQL语句-1"><a href="#规划SQL语句-1" class="headerlink" title="规划SQL语句"></a>规划SQL语句</h4><p>1.将某用户的所有收货地址设置为非默认地址（是否默认：0-不默认，1-默认）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update t_address set is_default=0 where uid=?</span><br></pre></td></tr></table></figure>
+
+<p>2.将某用户指定的收货地址设置为默认地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update t_address set is_default=1, modified_user=?, modified_time=? where aid=?</span><br></pre></td></tr></table></figure>
+
+<p>3.检查该收货地址是否存在，并检查数据归属是否正确。可根据收货地址aid值，查询收货地址详情数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_address where aid=?</span><br></pre></td></tr></table></figure>
+
+<h4 id="mapper接口-3"><a href="#mapper接口-3" class="headerlink" title="mapper接口"></a>mapper接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据uid查询用户收货地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 返回收货地址集合</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Select((&quot;SELECT * FROM t_address WHERE uid = #&#123;uid&#125; ORDER BY is_default desc, created_time desc;&quot;))</span></span><br><span class="line">List&lt;Address&gt; <span class="title function_">selectAddressListByUid</span><span class="params">(<span class="meta">@Param(&quot;uid&quot;)</span> Integer uid)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将用户原本的默认地址设置为非默认</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Update(&quot;UPDATE t_address SET is_default = 0 WHERE uid = #&#123;uid&#125; AND is_default = 1&quot;)</span></span><br><span class="line">Integer <span class="title function_">updateNonDefaultByUid</span><span class="params">(Integer uid)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将指定的收货地址设置为默认地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> aid 收货地址id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> modifiedUser 修改执行人</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> modifiedTime 修改时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 受影响的行数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Update(&quot;update t_address set is_default = 1,modified_user=#&#123;modifiedUser&#125;,modified_time=#&#123;modifiedTime&#125; where aid = #&#123;aid&#125;&quot;)</span></span><br><span class="line">Integer <span class="title function_">updateDefaultByAid</span><span class="params">(<span class="meta">@Param(&quot;aid&quot;)</span> Integer aid,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Param(&quot;modifiedUser&quot;)</span> String modifiedUser,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Param(&quot;modifiedTime&quot;)</span> Date modifiedTime)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="业务层-3"><a href="#业务层-3" class="headerlink" title="业务层"></a>业务层</h3><h4 id="异常规划-2"><a href="#异常规划-2" class="headerlink" title="异常规划"></a>异常规划</h4><ul>
+<li>尝试访问的收货地址数据不存在</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(defaultAddress == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;尝试访问的收货地址数据不存在&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>非法访问的异常</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!uid.equals(defaultAddress.getUid())) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;非法访问的异常&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置默认收货地址时出现未知错误[1]</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mapper.updateNonDefaultByUid(uid) != <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;设置默认收货地址时出现未知错误[1]&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置默认收货地址时出现未知错误[2]</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mapper.updateDefaultByAid(aid,username,<span class="keyword">new</span> <span class="title class_">Date</span>()) != <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;设置默认收货地址时出现未知错误[2]&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="接口-3"><a href="#接口-3" class="headerlink" title="接口"></a>接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置默认收货地址</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> aid 收货地址id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid 归属的用户id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> username 当前登录的用户名</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">setDefaultAddress</span><span class="params">(Integer uid, String username,Integer aid)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现-3"><a href="#实现-3" class="headerlink" title="实现"></a>实现</h4><p>在这个实现中我们添加了spring的事务管理。@Transactional</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setDefaultAddress</span><span class="params">(Integer uid, String username, Integer aid)</span> &#123;</span><br><span class="line">    <span class="comment">//获取到根据aid获得需要设置对象的aid</span></span><br><span class="line">    <span class="type">Address</span> <span class="variable">defaultAddress</span> <span class="operator">=</span> mapper.selectAddressByAid(aid);</span><br><span class="line">    <span class="keyword">if</span>(defaultAddress == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;尝试访问的收货地址数据不存在&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!uid.equals(defaultAddress.getUid())) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;非法访问的异常&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(mapper.updateNonDefaultByUid(uid) != <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;设置默认收货地址时出现未知错误[1]&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(mapper.updateDefaultByAid(aid,username,<span class="keyword">new</span> <span class="title class_">Date</span>()) != <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;设置默认收货地址时出现未知错误[2]&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="控制层-2"><a href="#控制层-2" class="headerlink" title="控制层"></a>控制层</h3><h4 id="设计请求-1"><a href="#设计请求-1" class="headerlink" title="设计请求"></a>设计请求</h4><p>设计用户提交的请求，并设计响应的方式。</p>
+<pre><code>请求路径：/addresses/&#123;aid&#125;/
+请求参数：@PathVaraible(&quot;aid&quot;) Integer aid, HttpSession sesion
+请求类型：PUT
+响应结果：R&lt;Void&gt;
+</code></pre>
+<h4 id="处理请求-2"><a href="#处理请求-2" class="headerlink" title="处理请求"></a>处理请求</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PutMapping(&quot;/&#123;aid&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> R&lt;Void&gt; <span class="title function_">setDefault</span><span class="params">(<span class="meta">@PathVariable(&quot;aid&quot;)</span> Integer aid, HttpSession session)</span>&#123;</span><br><span class="line">    <span class="type">Integer</span> <span class="variable">uid</span> <span class="operator">=</span> Integer.valueOf(session.getAttribute(<span class="string">&quot;uid&quot;</span>).toString());</span><br><span class="line">    <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span>  session.getAttribute(<span class="string">&quot;username&quot;</span>).toString();</span><br><span class="line">    addressService.setDefaultAddress(uid,username,aid);</span><br><span class="line">    <span class="keyword">return</span>  R.success(<span class="literal">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><p>添加script脚本</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setDefault</span>(<span class="params">aid</span>) &#123;</span><br><span class="line">   $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">      <span class="attr">url</span>: <span class="string">&quot;/addresses/&quot;</span> + aid,</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;PUT&quot;</span>,</span><br><span class="line">      <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">json</span>) &#123;</span><br><span class="line">         <span class="keyword">if</span> (json.<span class="property">code</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="title function_">showAddressList</span>();</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="title function_">alert</span>(<span class="string">&quot;设置默认收货地址失败！&quot;</span> + json.<span class="property">msg</span>);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">error</span>: <span class="keyword">function</span>(<span class="params">json</span>) &#123;</span><br><span class="line">         <span class="title function_">alert</span>(<span class="string">&quot;您的登录信息已经过期，请重新登录！HTTP响应码：&quot;</span> + json.<span class="property">status</span>);</span><br><span class="line">         location.<span class="property">href</span> = <span class="string">&quot;login.html&quot;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 商城项目</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/10/08/05.%E7%94%A8%E6%88%B7%E6%94%B6%E8%B4%A7%E7%AE%A1%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+      
+     
+
+
+  
+    <article id="post-04.用户上传头像" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/10/08/04.%E7%94%A8%E6%88%B7%E4%B8%8A%E4%BC%A0%E5%A4%B4%E5%83%8F/">04.用户上传头像</a>
+    </h1>
+  
+
+        
+        <a href="/2023/10/08/04.%E7%94%A8%E6%88%B7%E4%B8%8A%E4%BC%A0%E5%A4%B4%E5%83%8F/" class="archive-article-date">
+  	<time datetime="2023-10-08T06:03:29.231Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <span id="more"></span>
+
+<h1 id="用户上传头像"><a href="#用户上传头像" class="headerlink" title="用户上传头像"></a>用户上传头像</h1><h2 id="基于SpringMVC的文件上传"><a href="#基于SpringMVC的文件上传" class="headerlink" title="基于SpringMVC的文件上传"></a>基于SpringMVC的文件上传</h2><h3 id="MultipartFile接口"><a href="#MultipartFile接口" class="headerlink" title="MultipartFile接口"></a>MultipartFile接口</h3><p>MultipartFile接口常用的的API见下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">String getOriginalFilename()</td>
+<td>获取上传文件的原始文件名，即该文件在客户端中的文件名</td>
+</tr>
+<tr>
+<td align="left">boolean isEmpty()</td>
+<td>判断上传的文件是否为空，当没有选择文件就直接上传，或者选中的文件是0字节的空文件时，返回true，否则返回false</td>
+</tr>
+<tr>
+<td align="left">long getSize()</td>
+<td>获取上传的文件大小，以字节为单位</td>
+</tr>
+<tr>
+<td align="left">String getContentType()</td>
+<td>根据所上传的文件的扩展名决定该文件的MIME类型，例如上传.jpg格式的图片，将返回image&#x2F;jpeg</td>
+</tr>
+<tr>
+<td align="left">InputStream getInputStream()</td>
+<td>获取上传文件的输入字节流，通常用于自定义读取所上传的文件的过程，该方法与transferTo()方法不可以同时使用</td>
+</tr>
+<tr>
+<td align="left">void transferTo(File dest)</td>
+<td>保存上传的文件，该方法与getInputStream()方法不可以同时使用</td>
+</tr>
+</tbody></table>
+<h3 id="MultipartResolver接口"><a href="#MultipartResolver接口" class="headerlink" title="MultipartResolver接口"></a>MultipartResolver接口</h3><p>1.MultipartResolver可以将上传过程中产生的数据封装为MultipartFile类型的对象中。</p>
+<p>2.在配置MultipartResovler时，可以为其中的几个属性注入值：</p>
+<ul>
+<li>maxUploadSize：上传文件的最大大小，假设设置值为10M，一次性上传5个文件，则5个文件的大小总和不允许超过10M。</li>
+<li>maxUploadSizePerFile：每个上传文件的最大大小，假设设置值为10M，一次性上传5个文件，则每个文件的大小都不可以超过10M，但是5个文件的大小总和可以接近50M。</li>
+<li>defaultEncoding：默认编码。</li>
+</ul>
+<h3 id="基于SpringMVC的文件上传案例"><a href="#基于SpringMVC的文件上传案例" class="headerlink" title="基于SpringMVC的文件上传案例"></a>基于SpringMVC的文件上传案例</h3><h4 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h4><p>1.创建Java Enterprise项目，设置Name为springmvc-upload，Group为com.cy，Artifact为controller的Java企业级项目。</p>
+<p>2.将项目com.cy.controller包下自动生成的HelloServlet类删除，并删除webapp下自动生成的index.jsp文件。</p>
+<p>3.添加文件上传jar包依赖（关于文件上传需要添加spring-webmvc和commons-fileupload依赖）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 文件上传 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-fileupload<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-fileupload<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>4.在src\main\resources文件夹下创建spring配置文件，并将文件命名为spring-upload.xml。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">	   <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">	   <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">	   <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">	   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">	   http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">	   http://www.springframework.org/schema/context/spring-context-4.3.xsd&quot;</span>&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="前端页面设计"><a href="#前端页面设计" class="headerlink" title="前端页面设计"></a>前端页面设计</h4><p>在webapp目录下创建upload.html页面，并在页面中添加如下代码。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>文件上传<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h3</span>&gt;</span>文件上传<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- enctype属性：规定表单中数据在提交给服务器之前如何进行编码。默认表单数据的编码是&quot;application/x-www-form-urlencoded&quot;。</span></span><br><span class="line"><span class="comment">         application/x-www-form-urlencoded：提交前表单中所有数据都会进行编码；编码的规则是：空格转换为&quot;+&quot;加号，特殊符号转换为ASCII HEX值</span></span><br><span class="line"><span class="comment">         text/plain：提交前表单中数据空格转换为&quot;+&quot;加号，但不对特殊字符进行编码。</span></span><br><span class="line"><span class="comment">         multipart/form-data：提交前表单中不对字符进行编码；在使用包含文件上传控件的表单中，必须使用该值</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;upload.do&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">&quot;1&quot;</span> <span class="attr">cellspacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">cellpadding</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span>文件名(N)：<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">td</span> <span class="attr">colspan</span>=<span class="string">&quot;2&quot;</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;上传&quot;</span>/&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：form表单的请求方式必须设置为POST，并配置属性enctype&#x3D;”multipart&#x2F;form-data”，文件上传input控件的name属性值需设置为file值。</p>
+</blockquote>
+<h4 id="后台功能实现"><a href="#后台功能实现" class="headerlink" title="后台功能实现"></a>后台功能实现</h4><p>1.在web.xml文件中配置前端控制器和过滤器，并指定DispatcherServlet加载的配置文件springmvc-upload.xml的位置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:springmvc-upload.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.do<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.创建com.cy.controller.UploadController控制器类，在类的声明之前添加@Controller注解，并在控制器中添加处理请求的upload()方法，为此方法添加类型为MultipartFile接口的参数，并为该参数添加@RequestParam注解，表示客户端上传的文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cy.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.UUID;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UploadController</span> &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    @RequestMapping(&quot;upload.do&quot;)</span></span><br><span class="line"><span class="comment">    @ResponseBody</span></span><br><span class="line"><span class="comment">    public String upload(@RequestParam(&quot;file&quot;) MultipartFile file) &#123;</span></span><br><span class="line"><span class="comment">        System.out.println(&quot;UploadController.upload()...&quot;);</span></span><br><span class="line"><span class="comment">        File dest = new File(&quot;D:/1.png&quot;);</span></span><br><span class="line"><span class="comment">        try &#123;</span></span><br><span class="line"><span class="comment">            // 调用MultipartFile参数对象的transferTo()方法即可保存上传的文件</span></span><br><span class="line"><span class="comment">            file.transferTo(dest);</span></span><br><span class="line"><span class="comment">        &#125; catch (IOException e) &#123;</span></span><br><span class="line"><span class="comment">            e.printStackTrace();</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        return &quot;OK&quot;;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;upload.do&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">upload</span><span class="params">(HttpServletRequest request, <span class="meta">@RequestParam(&quot;file&quot;)</span> MultipartFile file)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 获取上传文件的原始文件名</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">originalFilename</span> <span class="operator">=</span> file.getOriginalFilename();</span><br><span class="line">        <span class="comment">// 获取上下文的绝对路径</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">realPath</span> <span class="operator">=</span> request.getServletContext().getRealPath(<span class="string">&quot;upload&quot;</span>);</span><br><span class="line">        System.out.println(realPath);</span><br><span class="line">        <span class="comment">// 创建File文件对象</span></span><br><span class="line">        <span class="type">File</span> <span class="variable">dir</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(realPath);</span><br><span class="line">        <span class="keyword">if</span> (!dir.exists()) &#123;</span><br><span class="line">            dir.mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 自定义上传文件名</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">fileName</span> <span class="operator">=</span> UUID.randomUUID().toString();</span><br><span class="line">        <span class="comment">// 获取上传文件扩展名</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">suffix</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">beginIndex</span> <span class="operator">=</span> originalFilename.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (beginIndex &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            suffix = originalFilename.substring(beginIndex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">fullFilename</span> <span class="operator">=</span> fileName + suffix;</span><br><span class="line">        <span class="comment">// 调用MultipartFile参数对象的transferTo()方法即可保存上传的文件</span></span><br><span class="line">        file.transferTo(<span class="keyword">new</span> <span class="title class_">File</span>(dir, fullFilename));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;OK&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.在springmvc-upload.xml配置文件中添加组件扫描和CommonsMultipartResolver类的bean标签配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 组件扫描 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.cy&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- CommonsMultipartResolver --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;multipartResolver&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：CommonsMultipartResolver类在配置时，id值必须设置成multipartResolver。</p>
+</blockquote>
+<h2 id="上传头像"><a href="#上传头像" class="headerlink" title="上传头像"></a>上传头像</h2><p>上传文件的操作其实是：先将用户上传的文件保存到服务器端的某个位置，然后将保存文件的路径记录在数据库中。当后续需要使用该文件时，从数据库中读出文件的路径，即可实现在线访问该文件。</p>
+<p>因此我们持久层只需要关心如何记录头像文件的路径，并不需要考虑上传时保存文件的过程。</p>
+<h3 id="持久层"><a href="#持久层" class="headerlink" title="持久层"></a>持久层</h3><h4 id="sql语句规划"><a href="#sql语句规划" class="headerlink" title="sql语句规划"></a>sql语句规划</h4><p>只需关注头像文件的路径即可,将路径存入数据即可。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> t_user <span class="keyword">set</span> avatar<span class="operator">=</span>?, modified_user<span class="operator">=</span>?, modified_time<span class="operator">=</span>? <span class="keyword">where</span> uid<span class="operator">=</span>?</span><br></pre></td></tr></table></figure>
+
+<h4 id="mapper接口"><a href="#mapper接口" class="headerlink" title="mapper接口"></a>mapper接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据uid修改头像路径</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> uid uid</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> avatar 头像路径</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> modifiedUser 操作用户</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> modifiedTime 操作时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Update((&quot;update t_user set avatar = #&#123;avatar&#125;, modified_user = #&#123;modifiedUser&#125;,&quot; +</span></span><br><span class="line"><span class="meta">            &quot;modified_time = #&#123;modifiedTime&#125; where uid = #&#123;uid&#125;&quot;))</span></span><br><span class="line">    Integer <span class="title function_">updateAvatarByUid</span><span class="params">(<span class="meta">@Param(&quot;uid&quot;)</span> Integer uid, <span class="meta">@Param(&quot;avatar&quot;)</span> String avatar,<span class="meta">@Param(&quot;modifiedUser&quot;)</span> String modifiedUser,</span></span><br><span class="line"><span class="params">                              <span class="meta">@Param(&quot;modifiedTime&quot;)</span> Date modifiedTime)</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="业务层"><a href="#业务层" class="headerlink" title="业务层"></a>业务层</h3><h4 id="规划异常"><a href="#规划异常" class="headerlink" title="规划异常"></a>规划异常</h4><ul>
+<li>登录用户在数据库中已经为空</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(res == <span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;该用户不存在&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>登录用户已经被删除</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(res.getIsDelete() == <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;该用户已被删除&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 修改用户头像</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> uid 当前登录的用户的id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> username 当前登录的用户名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> avatar 用户的新头像的路径</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">changeAvatar</span><span class="params">(Integer uid, String username, String avatar)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">changeAvatar</span><span class="params">(Integer uid, String username, String avatar)</span> &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">res</span> <span class="operator">=</span> mapper.findById(uid);</span><br><span class="line">    <span class="keyword">if</span>(res == <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;该用户不存在&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(res.getIsDelete() == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;该用户已被删除&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Date</span> <span class="variable">now</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">    mapper.updateAvatarByUid(uid,avatar,username,now);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="控制层"><a href="#控制层" class="headerlink" title="控制层"></a>控制层</h3><h4 id="设计请求"><a href="#设计请求" class="headerlink" title="设计请求"></a>设计请求</h4><p>设计用户提交的请求，并设计响应的方式：</p>
+<pre><code>请求路径：/users/change_avatar
+请求参数：MultipartFile file, HttpSession session
+请求类型：POST
+响应结果：R&lt;String&gt;
+</code></pre>
+<h4 id="处理请求"><a href="#处理请求" class="headerlink" title="处理请求"></a>处理请求</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;change_avatar&quot;)</span></span><br><span class="line"><span class="keyword">public</span> R&lt;String&gt; <span class="title function_">changeAvatar</span><span class="params">(<span class="meta">@RequestParam(&quot;file&quot;)</span> MultipartFile file, HttpSession session)</span> &#123;</span><br><span class="line">    <span class="comment">// 判断上传的文件是否为空</span></span><br><span class="line">    <span class="keyword">if</span> (file.isEmpty()) &#123;</span><br><span class="line">        <span class="comment">// 是：抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;上传的头像文件不允许为空&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断上传的文件大小是否超出限制值</span></span><br><span class="line">    <span class="keyword">if</span> (file.getSize() &gt; AVATAR_MAX_SIZE) &#123; <span class="comment">// getSize()：返回文件的大小，以字节为单位</span></span><br><span class="line">        <span class="comment">// 是：抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;不允许上传超过&quot;</span> + (AVATAR_MAX_SIZE / <span class="number">1024</span>) + <span class="string">&quot;KB的头像文件&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断上传的文件类型是否超出限制</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">contentType</span> <span class="operator">=</span> file.getContentType();</span><br><span class="line">    <span class="comment">// public boolean list.contains(Object o)：当前列表若包含某元素，返回结果为true；若不包含该元素，返回结果为false。</span></span><br><span class="line">    <span class="keyword">if</span> (!AVATAR_TYPES.contains(contentType)) &#123;</span><br><span class="line">        <span class="comment">// 是：抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;不支持使用该类型的文件作为头像，允许的文件类型：\n&quot;</span> + AVATAR_TYPES);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前项目的绝对磁盘路径</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">parent</span> <span class="operator">=</span> session.getServletContext().getRealPath(<span class="string">&quot;upload&quot;</span>);</span><br><span class="line">    <span class="comment">// 保存头像文件的文件夹</span></span><br><span class="line">    <span class="type">File</span> <span class="variable">dir</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(parent);</span><br><span class="line">    <span class="keyword">if</span> (!dir.exists()) &#123;</span><br><span class="line">        dir.mkdirs();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存的头像文件的文件名</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">suffix</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">originalFilename</span> <span class="operator">=</span> file.getOriginalFilename();</span><br><span class="line">    <span class="type">int</span> <span class="variable">beginIndex</span> <span class="operator">=</span> originalFilename.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (beginIndex &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        suffix = originalFilename.substring(beginIndex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">String</span> <span class="variable">filename</span> <span class="operator">=</span> UUID.randomUUID() + suffix;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建文件对象，表示保存的头像文件</span></span><br><span class="line">    <span class="type">File</span> <span class="variable">dest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(dir, filename);</span><br><span class="line">    <span class="comment">// 执行保存头像文件</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        file.transferTo(dest);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IllegalStateException e) &#123;</span><br><span class="line">        <span class="comment">// 抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;文件状态异常，可能文件已被移动或删除&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (BusinessException e) &#123;</span><br><span class="line">        <span class="comment">// 抛出异常</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(<span class="string">&quot;上传文件时读写错误，请稍后重尝试&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 头像路径</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">avatar</span> <span class="operator">=</span><span class="string">&quot;/upload/&quot;</span> + filename;</span><br><span class="line">    System.out.println(parent+avatar);</span><br><span class="line">    <span class="comment">// 从Session中获取uid和username</span></span><br><span class="line">    <span class="type">Integer</span> <span class="variable">uid</span> <span class="operator">=</span> (Integer) session.getAttribute(<span class="string">&quot;uid&quot;</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> session.getAttribute(<span class="string">&quot;username&quot;</span>).toString();</span><br><span class="line">    <span class="comment">// 将头像写入到数据库中</span></span><br><span class="line">    service.changeAvatar(uid, username, avatar);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回成功头像路径</span></span><br><span class="line">    <span class="keyword">return</span> R.success(avatar);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 商城项目</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/10/08/04.%E7%94%A8%E6%88%B7%E4%B8%8A%E4%BC%A0%E5%A4%B4%E5%83%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+      
+     
+
+
   
     <article id="post-03.用户资料修改" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -1160,160 +1562,6 @@
 
 
   
-    <article id="post-03.InnoDB数据页结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/08/03.InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">03.InnoDB数据页结构</a>
-    </h1>
-  
-
-        
-        <a href="/2023/10/08/03.InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2023-10-08T05:50:49.653Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230914205105125.png" alt="image-20230914205105125" style="zoom: 50%;" />
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/08/03.InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-      
-     
-
-
-  
-    <article id="post-02.InnoDB记录存储结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/08/02.InnoDB%E8%AE%B0%E5%BD%95%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">02.InnoDB记录存储结构</a>
-    </h1>
-  
-
-        
-        <a href="/2023/10/08/02.InnoDB%E8%AE%B0%E5%BD%95%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2023-10-08T05:50:49.650Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/InnoDB%E8%AE%B0%E5%BD%95%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84.png" alt="InnoDB记录存储结构" style="zoom: 67%;" />
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/08/02.InnoDB%E8%AE%B0%E5%BD%95%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-      
-     
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
@@ -1425,15 +1673,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1449,11 +1693,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1469,19 +1717,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 python 可视化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
             
             <div class="clearfix"></div>
