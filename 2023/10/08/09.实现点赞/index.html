@@ -9,12 +9,12 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>09.发布笔记并实现点赞 | bairi的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="发布笔记并实现点赞下面我们将实现笔记的发布和点赞的实现。 发布探店笔记探店笔记类似点评网站的评价，往往是图文结合。对应的表有两个：tb_blog：探店笔记表，包含笔记中的标题、文字、图片等tb_blog_comments：其他用户对探店笔记的评价 具体发布流程  上传接口 1234567891011121314151617181920212223@Slf4j@RestController@Re">
+  <meta name="description" content="发布笔记并实现点赞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="09.发布笔记并实现点赞">
 <meta property="og:url" content="http://example.com/2023/10/08/09.%E5%AE%9E%E7%8E%B0%E7%82%B9%E8%B5%9E/index.html">
 <meta property="og:site_name" content="bairi的博客">
-<meta property="og:description" content="发布笔记并实现点赞下面我们将实现笔记的发布和点赞的实现。 发布探店笔记探店笔记类似点评网站的评价，往往是图文结合。对应的表有两个：tb_blog：探店笔记表，包含笔记中的标题、文字、图片等tb_blog_comments：其他用户对探店笔记的评价 具体发布流程  上传接口 1234567891011121314151617181920212223@Slf4j@RestController@Re">
+<meta property="og:description" content="发布笔记并实现点赞">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/1653578992639.png">
 <meta property="og:image" content="http://example.com/%E8%B5%84%E6%96%99/redis/02-%E5%AE%9E%E6%88%98%E7%AF%87/%E8%AE%B2%E4%B9%89/Redis%E5%AE%9E%E6%88%98%E7%AF%87.assets/1653579931626.png">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/1653805203758.png">
 <meta property="og:image" content="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230906103545816.png">
 <meta property="article:published_time" content="2023-10-08T06:31:58.224Z">
-<meta property="article:modified_time" content="2023-10-08T06:42:56.247Z">
+<meta property="article:modified_time" content="2023-10-08T06:56:20.152Z">
 <meta property="article:author" content="bairi">
 <meta property="article:tag" content="笔记 redis 项目">
 <meta name="twitter:card" content="summary">
@@ -199,7 +199,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <span id="more"></span>
+        <p>发布笔记并实现点赞</p>
+<span id="more"></span>
 
 <h2 id="发布笔记并实现点赞"><a href="#发布笔记并实现点赞" class="headerlink" title="发布笔记并实现点赞"></a>发布笔记并实现点赞</h2><p>下面我们将实现笔记的发布和点赞的实现。</p>
 <h3 id="发布探店笔记"><a href="#发布探店笔记" class="headerlink" title="发布探店笔记"></a>发布探店笔记</h3><p>探店笔记类似点评网站的评价，往往是图文结合。对应的表有两个：<br>tb_blog：探店笔记表，包含笔记中的标题、文字、图片等<br>tb_blog_comments：其他用户对探店笔记的评价</p>
@@ -232,7 +233,7 @@
 </ul>
 <p>实现步骤：</p>
 <ul>
-<li>给Blog类中添加一个isLike字段，标示是否被当前用户点赞</li>
+<li>xxxxxxxxxx &#x2F;**     * 求两个用户共同关注     * @param id 另一个用户id     * @return 两个用户的共同关注     *&#x2F;    @Override    public Result followCommons(Long id) {        Long userId &#x3D; UserHolder.getUser().getId();        &#x2F;&#x2F;当前用户id和另一个用户id关注列表的键        String Key1 &#x3D; “follows:” + id;        String Key2 &#x3D; “follows:” + userId;        &#x2F;&#x2F;&#x2F;&#x2F;对两个用户的关注集合求交集        Set<String> Commons &#x3D; stringRedisTemplate.opsForSet().intersect(Key1, Key2);        log.info(“Following:”+Commons.toString());        &#x2F;&#x2F;通过交集查询的用户id获取用户信息        List<UserDTO> userDTOS &#x3D; Commons.stream().map(uidStr -&gt; {            Long uid &#x3D; Long.valueOf(uidStr);            User user &#x3D; userService.getById(uid);            return BeanUtil.copyProperties(user, UserDTO.class);        }).collect(Collectors.toList());        log.info(“users:”+userDTOS);        return Result.ok(userDTOS);    }java</li>
 <li>修改点赞功能，利用Redis的set集合判断是否点赞过，未点赞过则点赞数+1，已点赞过则点赞数-1</li>
 <li>修改根据id查询Blog的业务，判断当前登录用户是否点赞过，赋值给isLike字段</li>
 <li>修改分页查询Blog业务，判断当前登录用户是否点赞过，赋值给isLike字段</li>
@@ -588,7 +589,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MySQL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -596,7 +597,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MySQL</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -604,7 +605,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -612,11 +613,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记 商城项目</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记 商城项目</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -636,11 +637,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
               </li>
             
             <div class="clearfix"></div>
