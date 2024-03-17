@@ -63,7 +63,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 77
+                     总文章数 100
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -421,27 +421,27 @@
 
 
   
-    <article id="post-Iterator模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-实现评论功能" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/19/Iterator%E6%A8%A1%E5%BC%8F/">Iterator模式</a>
+      <a class="article-title" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/">实现评论管理</a>
     </h1>
   
 
         
-        <a href="/2023/10/19/Iterator%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2023-10-19T02:10:19.780Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-19</time>
+        <a href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:49:07.245Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231017143616583.png" alt="image-20231017143616583" style="zoom:50%;" />
+        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231114213619849.png" alt="image-20231114213619849" style="zoom: 50%;" />
         
       
 
@@ -455,7 +455,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 设计模式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
         		</li>
       		
 		</ul>
@@ -465,7 +465,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/19/Iterator%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/">展开全文 >></a>
         </p>
       
 
@@ -498,28 +498,89 @@
 
 
   
-    <article id="post-Adapter模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-评论增加点赞功能" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/19/Adapter%E6%A8%A1%E5%BC%8F/">Adapter模式</a>
+      <a class="article-title" href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/">评论增加点赞功能</a>
     </h1>
   
 
         
-        <a href="/2023/10/19/Adapter%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2023-10-19T02:10:19.772Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-19</time>
+        <a href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:49:07.241Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231018141003528.png" alt="image-20231018141003528" style="zoom: 50%;" />
-        
+        <span id="more"></span>
+
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>在之前实现的评论功能的基础上，我们再新加上这些功能：</p>
+<ol>
+<li><p>给评论点赞</p>
+</li>
+<li><p>一级评论显示子评论时按照点赞数显示前三条</p>
+</li>
+</ol>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="实现点赞"><a href="#实现点赞" class="headerlink" title="实现点赞"></a>实现点赞</h3><p>点赞功能需要实现每个账号仅能点赞一次，因此我们可以考虑使用redis中的Set数据结构实现。我们可以使用<strong>Set数据结构维护每一个评论的点赞用户集合</strong>。</p>
+<p>当用户点赞时我们做一下操作：</p>
+<p>拿到用户id后到redis找到该评论的点赞用户的集合，判断id是否存在。</p>
+<ul>
+<li><p>存在：取消点赞。评论点赞数减少，并将该id从set集合中移除。</p>
+</li>
+<li><p>不存在：点赞。评论点赞数增加，并将该id添加到set集合中。</p>
+</li>
+</ul>
+<p>如此，我们就可以实现常见的评论功能。</p>
+<h3 id="显示评论点赞数最高的三条回复"><a href="#显示评论点赞数最高的三条回复" class="headerlink" title="显示评论点赞数最高的三条回复"></a>显示评论点赞数最高的三条回复</h3><p>这个功能可以使用两种方式实现：</p>
+<ol>
+<li>在设置评论的回复时从MySQL中根据点赞数降序排行后拿到三条点赞数最高的回复。</li>
+<li>通过redis的ZSet数据结构给每个评论下的回复实现一个类似点赞排行榜的功能。我们可以从redis中拿到ZSet中三条最高点赞的回复id。</li>
+</ol>
+<p>这里我们选择第二种方式实现(哪个实现方式效率更改我也不好说，没有测试过)：</p>
+<ol>
+<li>给每个评论维护一个score为点赞值liked的ZSet数据结构，初始时score为0。</li>
+<li>当给回复点赞时，在之前<strong>实现点赞的基础</strong>上，我们再到该评论的Zset集合下将该回复的score增加1，取消点赞则反之。</li>
+<li>显示评论时，每个评论都到ZSet集合中拿到点赞数最高的三条回复。</li>
+</ol>
+<h2 id="点赞实现代码"><a href="#点赞实现代码" class="headerlink" title="点赞实现代码"></a>点赞实现代码</h2><h3 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户点赞评论</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> id 评论id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 成功或者失败</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@PutMapping(&quot;/likes/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">likeComment</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> commentsService.likeComment(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前端只需要传入评论的ID即可。</p>
+<h3 id="代码逻辑实现"><a href="#代码逻辑实现" class="headerlink" title="代码逻辑实现"></a>代码逻辑实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">likeComment</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(isCommentLiked(id))&#123;</span><br><span class="line">        cancelLike(id);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        like(id);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Result.success(<span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取用户当前用户是否点赞过该博客</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> commentsID 评论ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 点赞true，未点赞false</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean <span class="title function_">isCommentLiked</span><span class="params">(Long commentsID)</span> &#123;</span><br><span class="line">         <span class="keyword">return</span> stringRedisTemplate.opsForSet().isMember(</span><br><span class="line">                 COMMENT_LIKED_KEY + commentsID,</span><br><span class="line">                 UserHolder.getUser().getId().toString());</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 点赞</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id 评论ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">like</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        lambdaUpdate().setSql(<span class="string">&quot;liked = liked + 1&quot;</span>).eq(Comment::getId, id).update();</span><br><span class="line">        stringRedisTemplate.opsForSet().add(COMMENT_LIKED_KEY + id,UserHolder.getUser().getId().toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 取消点赞</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id 评论ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">cancelLike</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        lambdaUpdate().setSql(<span class="string">&quot;liked = liked - 1&quot;</span>).eq(Comment::getId, id).update();</span><br><span class="line">        stringRedisTemplate.opsForSet().remove(COMMENT_LIKED_KEY + id,UserHolder.getUser().getId().toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="实现回复点赞排行榜"><a href="#实现回复点赞排行榜" class="headerlink" title="实现回复点赞排行榜"></a>实现回复点赞排行榜</h2><h3 id="代码逻辑实现-1"><a href="#代码逻辑实现-1" class="headerlink" title="代码逻辑实现"></a>代码逻辑实现</h3><p>该功能需要在之前的代码做一些修改：</p>
+<ol>
+<li>回复评论时将回复的id加入到该评论维护的回复点赞排行榜，初始score为0。</li>
+</ol>
+<p>修改插入评论逻辑<code>insertComment</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Result <span class="title function_">insertComment</span><span class="params">(CommentInfo commentInfo)</span> &#123;</span><br><span class="line">    <span class="type">Comment</span> <span class="variable">comment</span> <span class="operator">=</span> getCommentByCommentInfo(commentInfo);</span><br><span class="line">    save(comment);</span><br><span class="line">    <span class="keyword">if</span>(isReply(commentInfo.getParent()))&#123;</span><br><span class="line">        addReplyToParentZSet(comment.getId(),commentInfo.getParent());</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        updateArticleCommentCount(comment.getArticleId());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Result.success(<span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将回复添加到父评论的ZSet底下</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id 回复id</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> parent 父评论ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addReplyToParentZSet</span><span class="params">(Long id, Long parent)</span> &#123;</span><br><span class="line">        stringRedisTemplate.opsForZSet().add(COMMENT_REPLY_KEY + parent, id.toString(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断是评论还是回复</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> Parent 父评论ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true是回复，false是评论</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isReply</span><span class="params">(Long Parent)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Parent != <span class="literal">null</span> &amp;&amp; Parent != <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>点赞(取消点赞)时，将<code>ZSet</code>下的被点赞的回复id的<code>score</code>值增加1（减少1）。</li>
+</ol>
+<p>修改点赞（取消）的逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 点赞</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> id 评论ID</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">like</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    lambdaUpdate().setSql(<span class="string">&quot;liked = liked + 1&quot;</span>).eq(Comment::getId, id).update();</span><br><span class="line">    stringRedisTemplate.opsForSet().add(COMMENT_LIKED_KEY + id,UserHolder.getUser().getId().toString());</span><br><span class="line">    <span class="type">Long</span> <span class="variable">parentId</span> <span class="operator">=</span> lambdaQuery().select(Comment::getParentId).eq(Comment::getId, id).one().getParentId();</span><br><span class="line">    <span class="keyword">if</span>(isReply(parentId))&#123;</span><br><span class="line">        stringRedisTemplate.opsForZSet().incrementScore(COMMENT_REPLY_KEY + parentId, String.valueOf(id),<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 取消点赞</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> id 评论ID</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">cancelLike</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    lambdaUpdate().setSql(<span class="string">&quot;liked = liked - 1&quot;</span>).eq(Comment::getId, id).update();</span><br><span class="line">    stringRedisTemplate.opsForSet().remove(COMMENT_LIKED_KEY + id,UserHolder.getUser().getId().toString());</span><br><span class="line">    <span class="type">Long</span> <span class="variable">parentId</span> <span class="operator">=</span> lambdaQuery().select(Comment::getParentId).eq(Comment::getId, id).one().getParentId();</span><br><span class="line">    <span class="keyword">if</span>(isReply(parentId))&#123;</span><br><span class="line">        stringRedisTemplate.opsForZSet().incrementScore(COMMENT_REPLY_KEY + parentId, id.toString(),-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在显示评论下的回复时数据从redis中评论的ZSet集合中取出。</li>
+</ol>
+<p>我们只需修改该函数下的两个函数即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将父评论对应的子评论设置到父评论Vo中</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent 父评论</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> CommentVo <span class="title function_">setChildren</span><span class="params">(CommentVo parent)</span> &#123;</span><br><span class="line">    parent.setChildren(getChildren(parent.getId()));</span><br><span class="line">    parent.setChildrenCount(getChildrenCount(parent.getId()));</span><br><span class="line">    <span class="keyword">return</span> parent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取指定评论的子评论数量</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parentId 父评论id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 子评论数量</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Long <span class="title function_">getChildrenCount</span><span class="params">(Long parentId)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> stringRedisTemplate.opsForZSet().size(COMMENT_REPLY_KEY + parentId);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获得该父评论对应的子评论</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parentId 父评论Id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 父评论下的子评论集合</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> List&lt;ReplyVo&gt; <span class="title function_">getChildren</span><span class="params">(Long parentId)</span> &#123;</span><br><span class="line">    Set&lt;String&gt; top3Reply = stringRedisTemplate.opsForZSet().reverseRange(</span><br><span class="line">            COMMENT_REPLY_KEY + parentId, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span>(top3Reply == <span class="literal">null</span> || top3Reply.isEmpty()) <span class="keyword">return</span> Collections.emptyList();</span><br><span class="line">    <span class="keyword">return</span> lambdaQuery()</span><br><span class="line">            .in(Comment::getId, top3Reply.stream().map(Long::valueOf).collect(Collectors.toList()))</span><br><span class="line">            .last(<span class="string">&quot;ORDER BY FIELD(id,&quot;</span> + String.join(<span class="string">&quot;,&quot;</span>, top3Reply) + <span class="string">&quot;)&quot;</span>)</span><br><span class="line">            .list()</span><br><span class="line">            .stream()</span><br><span class="line">            .map(<span class="built_in">this</span>::CommentToCommentVo)</span><br><span class="line">            .map(commentVo -&gt; (ReplyVo) commentVo)</span><br><span class="line">            .toList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>计算评论回复数量时，我们只需要拿到redis中该评论的ZSet集合大小即可。</li>
+<li>从ZSet集合中拿到top3的回复id后到数据中拿到完整数据。</li>
+</ul>
+
       
 
       
@@ -532,7 +593,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 设计模式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
         		</li>
       		
 		</ul>
@@ -542,7 +603,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/19/Adapter%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/">展开全文 >></a>
         </p>
       
 
@@ -575,27 +636,27 @@
 
 
   
-    <article id="post-通用互斥锁和逻辑过期方案解决redis缓存击穿" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-实现评论管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/19/%E9%80%9A%E7%94%A8%E4%BA%92%E6%96%A5%E9%94%81%E5%92%8C%E9%80%BB%E8%BE%91%E8%BF%87%E6%9C%9F%E6%96%B9%E6%A1%88%E8%A7%A3%E5%86%B3redis%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/">通用互斥锁和逻辑过期方案解决redis缓存击穿</a>
+      <a class="article-title" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/">实现评论管理</a>
     </h1>
   
 
         
-        <a href="/2023/10/19/%E9%80%9A%E7%94%A8%E4%BA%92%E6%96%A5%E9%94%81%E5%92%8C%E9%80%BB%E8%BE%91%E8%BF%87%E6%9C%9F%E6%96%B9%E6%A1%88%E8%A7%A3%E5%86%B3redis%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" class="archive-article-date">
-  	<time datetime="2023-10-19T02:10:10.919Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-19</time>
+        <a href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:49:07.232Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231011151405868.png" alt="image-20231011151405868" style="zoom:67%;" />
+        <p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231127191158225.png" alt="image-20231127191158225"></p>
         
       
 
@@ -609,7 +670,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
         		</li>
       		
 		</ul>
@@ -619,7 +680,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/19/%E9%80%9A%E7%94%A8%E4%BA%92%E6%96%A5%E9%94%81%E5%92%8C%E9%80%BB%E8%BE%91%E8%BF%87%E6%9C%9F%E6%96%B9%E6%A1%88%E8%A7%A3%E5%86%B3redis%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/">展开全文 >></a>
         </p>
       
 
@@ -652,27 +713,27 @@
 
 
   
-    <article id="post-AOP和注解实现自定义缓存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-10.搭建Sql执行器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/19/AOP%E5%92%8C%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%93%E5%AD%98/">AOP和注解实现自定义缓存</a>
+      <a class="article-title" href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/">10.搭建Sql执行器</a>
     </h1>
   
 
         
-        <a href="/2023/10/19/AOP%E5%92%8C%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%93%E5%AD%98/" class="archive-article-date">
-  	<time datetime="2023-10-19T02:10:10.916Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-19</time>
+        <a href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:48:53.524Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>自定义注解和Spring的AOP功能向结合，通过在方法的头上打上注解，来实现将方法返回的数据加入到缓存中，优化业务的性能。</p>
+        <p>在搭建了基础框架之后，我们就可以使用执行器Excutor根据XML的信息来执行Sql并拿到值了。</p>
         
       
 
@@ -686,7 +747,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM ORM</a>
         		</li>
       		
 		</ul>
@@ -696,7 +757,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/19/AOP%E5%92%8C%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%93%E5%AD%98/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/">展开全文 >></a>
         </p>
       
 
@@ -729,27 +790,27 @@
 
 
   
-    <article id="post-11.实现附近商铺" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-09.搭建基础框架" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/08/11.%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E5%95%86%E9%93%BA/">11.redisGEO数据结构的基本用法</a>
+      <a class="article-title" href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/">09.搭建ORM基础框架</a>
     </h1>
   
 
         
-        <a href="/2023/10/08/11.%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E5%95%86%E9%93%BA/" class="archive-article-date">
-  	<time datetime="2023-10-08T06:31:58.229Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
+        <a href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:48:53.522Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20230923151544759.png" alt="image-20230923151544759" style="zoom:80%;" />
+        <p>搭建一个仿Mybatis框架的基础框架逻辑，包括XML解析，代理对象工厂MapperProxyFactory，映射器注册MapperRegistry。</p>
         
       
 
@@ -763,7 +824,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">笔记 redis 项目</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM ORM</a>
         		</li>
       		
 		</ul>
@@ -773,7 +834,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/08/11.%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E5%95%86%E9%93%BA/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/">展开全文 >></a>
         </p>
       
 
@@ -806,27 +867,27 @@
 
 
   
-    <article id="post-10实现好友关注" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-08.解析切面类并实现代理类逻辑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/08/10%E5%AE%9E%E7%8E%B0%E5%A5%BD%E5%8F%8B%E5%85%B3%E6%B3%A8/">10.好友关注</a>
+      <a class="article-title" href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/">08.解析切面类并实现代理类逻辑</a>
     </h1>
   
 
         
-        <a href="/2023/10/08/10%E5%AE%9E%E7%8E%B0%E5%A5%BD%E5%8F%8B%E5%85%B3%E6%B3%A8/" class="archive-article-date">
-  	<time datetime="2023-10-08T06:31:58.227Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
+        <a href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:48:53.519Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="C:/Users/soga/AppData/Roaming/Typora/typora-user-images/image-20230909092508741.png" alt="image-20230909092508741" style="zoom: 80%;" />
+        <p>通能够生成代理对象后，我们就需要实现代理对象的调用逻辑了。</p>
         
       
 
@@ -840,7 +901,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">笔记 redis 项目</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM AOP</a>
         		</li>
       		
 		</ul>
@@ -850,7 +911,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/08/10%E5%AE%9E%E7%8E%B0%E5%A5%BD%E5%8F%8B%E5%85%B3%E6%B3%A8/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/">展开全文 >></a>
         </p>
       
 
@@ -883,27 +944,27 @@
 
 
   
-    <article id="post-09.实现点赞" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-07.实现ProxyFactory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/10/08/09.%E5%AE%9E%E7%8E%B0%E7%82%B9%E8%B5%9E/">09.发布笔记并实现点赞</a>
+      <a class="article-title" href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/">07.实现ProxyFactory</a>
     </h1>
   
 
         
-        <a href="/2023/10/08/09.%E5%AE%9E%E7%8E%B0%E7%82%B9%E8%B5%9E/" class="archive-article-date">
-  	<time datetime="2023-10-08T06:31:58.224Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-10-08</time>
+        <a href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/" class="archive-article-date">
+  	<time datetime="2024-03-17T08:48:53.517Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>发布笔记并实现点赞</p>
+        <p>通过JDK的动态代理和<code>ByteBuddy</code>字节码技术来生成代理代理对象</p>
         
       
 
@@ -917,7 +978,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">笔记 redis 项目</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM AOP</a>
         		</li>
       		
 		</ul>
@@ -927,7 +988,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/10/08/09.%E5%AE%9E%E7%8E%B0%E7%82%B9%E8%B5%9E/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/">展开全文 >></a>
         </p>
       
 
@@ -962,7 +1023,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -974,7 +1035,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2023 bairi
+    		&copy; 2024 bairi
     	</div>
       	<div class="footer-right">
     
@@ -1071,7 +1132,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MySQL</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1079,7 +1140,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记 SpringBoot SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1088,10 +1153,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记 SpringBoot SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1107,7 +1168,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记 手写SSM IOC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">笔记 信息的表示和处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记 手写SSM AOP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记 手写SSM ORM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1115,7 +1188,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记 手写SSM Web</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 功能 缓存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1127,6 +1208,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">笔记 算法 排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
               </li>
              
@@ -1135,7 +1224,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">笔记 算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 功能 评论</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">笔记 JavaSe</a>
               </li>
             
             <div class="clearfix"></div>
