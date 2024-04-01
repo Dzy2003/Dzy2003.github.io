@@ -63,7 +63,7 @@
 			</ul>
 		</nav>
                      <nav>
-                     总文章数 100
+                     总文章数 113
                      </nav>
 		<nav class="header-smart-menu">
     		
@@ -421,28 +421,93 @@
 
 
   
-    <article id="post-实现评论功能" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-OpenFeign实现远程调用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/">实现评论管理</a>
+      <a class="article-title" href="/2024/04/01/OpenFeign%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8/">OpenFeign实现远程调用</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:49:07.245Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/OpenFeign%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:31:08.049Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231114213619849.png" alt="image-20231114213619849" style="zoom: 50%;" />
-        
+        <span id="more"></span>
+
+<h2 id="OpenFeign实现远程调用"><a href="#OpenFeign实现远程调用" class="headerlink" title="OpenFeign实现远程调用"></a>OpenFeign实现远程调用</h2><p>在之前，我们一个服务调用注册中心其它服务的接口时需要我们编写大量的逻辑来完成远程调用，比如使用<code>RestTemplate</code>实现的远程调用：</p>
+<ol>
+<li>注入<code>RestTemplate</code></li>
+<li>通过服务发现<code>discoveryClient</code>拿到其它微服务的地址</li>
+<li>拼接地址，发起http请求</li>
+<li>封装返回值</li>
+</ol>
+<p>这样每一次远程调用都会在代码中留下大量的远程调用逻辑，让开发人员难以专注于业务功能。因此我们应该寻找一个能够将远程调用代码进行封装的组件，简化我们的代码。</p>
+<p>而<code>OpenFeign</code>就是目前流行微服务组件。</p>
+<h2 id="OpenFeign快速入门"><a href="#OpenFeign快速入门" class="headerlink" title="OpenFeign快速入门"></a>OpenFeign快速入门</h2><p>我们还是以之前实现的购物车和商品服务作为例子，优化之前由<code>RestTemplate</code>完成的远程调用，这样更能感受到OpenFeign的简洁。</p>
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><p>在购物车微服务的pom文件中引入<code>OpenFeign</code>的依赖和<code>loadBalancer</code>依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--openFeign--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--负载均衡器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>loadBalancer</code>：在对微服务的调用中需要用到负载均衡，这个依赖内置了负载均衡的各自策略。</li>
+</ul>
+<h3 id="在启动类启用OpenFeign"><a href="#在启动类启用OpenFeign" class="headerlink" title="在启动类启用OpenFeign"></a>在启动类启用OpenFeign</h3><p>在Cart微服务的启动类上加入注解<code>@EnableFeignClients</code>来支持OpenFeign组件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MapperScan(&quot;com.hmall.cart.mapper&quot;)</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CartApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(CartApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RestTemplate <span class="title function_">restTemplate</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="编写OpenFeign客户端"><a href="#编写OpenFeign客户端" class="headerlink" title="编写OpenFeign客户端"></a>编写OpenFeign客户端</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(&quot;item-service&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ItemClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/items&quot;)</span></span><br><span class="line">    List&lt;ItemDTO&gt; <span class="title function_">queryItemByIds</span><span class="params">(<span class="meta">@RequestParam(&quot;ids&quot;)</span> Collection&lt;Long&gt; ids)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>可以看到这里的接口编写与SpringMVC的Controller接口的编写非常相似，降低了我们的学习成本。</p>
+</li>
+<li><p><code>@FeignClient(&quot;item-service&quot;)</code>注解指定了提供服务的微服务</p>
+</li>
+<li><p><code>ItemClient</code>仅仅只是一个接口，我们很容易想到<strong>SpringCloud是通过接口生成动态代理对象并注册到IOC容器中</strong>，这样我们就可以通过注入使用<code>ItemClient</code></p>
+</li>
+</ul>
+<h3 id="使用FeignClient"><a href="#使用FeignClient" class="headerlink" title="使用FeignClient"></a>使用FeignClient</h3><p>编写了<code>OpenFeign</code>客户端之后就可以在代码中调用<code>ItemClient</code>编写的接口:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ItemDTO&gt; items = itemClient.queryItemByIds(itemIds);</span><br></pre></td></tr></table></figure>
+
+<p>在使用了<code>OpenFeign</code>现在我们只需要这样一行代码就可以完成远程调用。</p>
+<h2 id="使用连接池"><a href="#使用连接池" class="headerlink" title="使用连接池"></a>使用连接池</h2><p>Feign底层发起http请求，依赖于其它的框架。其底层支持的http客户端实现包括：</p>
+<ul>
+<li>HttpURLConnection：默认实现，不支持连接池</li>
+<li>Apache HttpClient ：支持连接池</li>
+<li>OKHttp：支持连接池</li>
+</ul>
+<p>因此我们通常会使用带有连接池的客户端来代替默认的HttpURLConnection。比如，我们使用OK Http.</p>
+<h3 id="引入依赖-1"><a href="#引入依赖-1" class="headerlink" title="引入依赖"></a>引入依赖</h3><p>在<code>cart-service</code>的<code>pom.xml</code>中引入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--OK http 的依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="开启连接池"><a href="#开启连接池" class="headerlink" title="开启连接池"></a>开启连接池</h3><p>在<code>cart-service</code>的<code>application.yml</code>配置文件中开启Feign的连接池功能：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">okhttp:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启OKHttp功能</span></span><br></pre></td></tr></table></figure>
+
+<p>重启服务，连接池就生效了。</p>
+<h2 id="优化OpenFeign使用"><a href="#优化OpenFeign使用" class="headerlink" title="优化OpenFeign使用"></a>优化OpenFeign使用</h2><p>我们这样在一个微服务内编写了一个<code>FeignClient</code>，如果其它微服务也需要调用这个微服务的接口我们又需要再编写一个<code>FeignClient</code>。这样就出现了重复代码，我们消除重复代码的一般可以通过抽取到一个公共模块来实现。我们可以在一个API模块里面编写微服务需要的远程调用接口。</p>
+<h3 id="抽取Feign客户端"><a href="#抽取Feign客户端" class="headerlink" title="抽取Feign客户端"></a>抽取Feign客户端</h3><p>我们首先新建一个模块，并导入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--open feign--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- load balancer--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后将之前实现的ItemClient复制到api模块下：</p>
+<p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20240322165942529.png" alt="image-20240322165942529"></p>
+<h3 id="指定FeignClient扫描包"><a href="#指定FeignClient扫描包" class="headerlink" title="指定FeignClient扫描包"></a>指定FeignClient扫描包</h3><p>现在我们就可以让微服务项目依赖于api模块来实现远程调用了，但现在由于微服务模块不能扫描到<code>FeignClient</code>所以SpringBoot无法对<code>FeignClient</code>实现自动装配，因此我们需要指定<code>FeignClient</code>扫描路径（与<code>Mybatis</code>的<code>Mapper</code>扫描路径相似）：</p>
+<p>我们在Cart-Service的启动类上添加注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(basePackages = &quot;com.duan.api.client&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>basePackages</code>属性就是指定包扫描路径，我们同样可以使用<code>basePackageClasses</code>属性来直接指定<code>FeignClient</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(basePackageClasses = ItemClient.class)</span></span><br></pre></td></tr></table></figure>
+
+<p>现在<code>Springboot</code>启动时就会自动扫描包下或者指定接口并为这个<code>FeignClient</code>创建代理对象加入到IOC容器中，我们就可以通过注入使用</p>
+<p><code>FeignClient</code>了。</p>
+
       
 
       
@@ -455,7 +520,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 微服务组件</a>
         		</li>
       		
 		</ul>
@@ -465,7 +530,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/OpenFeign%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8/">展开全文 >></a>
         </p>
       
 
@@ -498,27 +563,27 @@
 
 
   
-    <article id="post-评论增加点赞功能" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Nacos服务注册和服务发现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/">评论增加点赞功能</a>
+      <a class="article-title" href="/2024/04/01/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">Nacos服务注册和服务发现</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:49:07.241Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:31:08.046Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用Redis实现评论点赞功能。</p>
+        <p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20240321214956622.png" alt="image-20240321214956622"></p>
         
       
 
@@ -532,7 +597,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 微服务组件</a>
         		</li>
       		
 		</ul>
@@ -542,7 +607,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/%E8%AF%84%E8%AE%BA%E5%A2%9E%E5%8A%A0%E7%82%B9%E8%B5%9E%E5%8A%9F%E8%83%BD/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/Nacos%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">展开全文 >></a>
         </p>
       
 
@@ -575,27 +640,27 @@
 
 
   
-    <article id="post-实现评论管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-GateWay网关" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/">实现评论管理</a>
+      <a class="article-title" href="/2024/04/01/GateWay%E7%BD%91%E5%85%B3/">GateWay网关</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:49:07.232Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/GateWay%E7%BD%91%E5%85%B3/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:31:08.044Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231127191158225.png" alt="image-20231127191158225"></p>
+        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20240324154836470.png" alt="image-20240324154836470" style="zoom:67%;" />
         
       
 
@@ -609,7 +674,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 功能 评论</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 微服务组件</a>
         		</li>
       		
 		</ul>
@@ -619,7 +684,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E7%AE%A1%E7%90%86/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/GateWay%E7%BD%91%E5%85%B3/">展开全文 >></a>
         </p>
       
 
@@ -652,27 +717,27 @@
 
 
   
-    <article id="post-10.搭建Sql执行器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Docker注册Nacos" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/">10.搭建Sql执行器</a>
+      <a class="article-title" href="/2024/04/01/Docker%E6%B3%A8%E5%86%8CNacos/">Docker注册Nacos</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:48:53.524Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/Docker%E6%B3%A8%E5%86%8CNacos/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:31:08.042Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在搭建了基础框架之后，我们就可以使用执行器Excutor根据XML的信息来执行Sql并拿到值了。</p>
+        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20240320191321083.png" alt="image-20240320191321083" style="zoom: 50%;" />
         
       
 
@@ -686,7 +751,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM ORM</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">笔记 微服务组件</a>
         		</li>
       		
 		</ul>
@@ -696,7 +761,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/10.%E6%90%AD%E5%BB%BASql%E6%89%A7%E8%A1%8C%E5%99%A8/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/Docker%E6%B3%A8%E5%86%8CNacos/">展开全文 >></a>
         </p>
       
 
@@ -729,27 +794,27 @@
 
 
   
-    <article id="post-09.搭建基础框架" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Template Method模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/">09.搭建ORM基础框架</a>
+      <a class="article-title" href="/2024/04/01/Template%20Method%E6%A8%A1%E5%BC%8F/">Template Method模式</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:48:53.522Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/Template%20Method%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:26:01.215Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>搭建一个仿Mybatis框架的基础框架逻辑，包括XML解析，代理对象工厂MapperProxyFactory，映射器注册MapperRegistry。</p>
+        <img src="C:/Users/soga/AppData/Roaming/Typora/typora-user-images/image-20231019213450306.png" alt="image-20231019213450306" style="zoom: 50%;" />
         
       
 
@@ -763,7 +828,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM ORM</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 设计模式</a>
         		</li>
       		
 		</ul>
@@ -773,7 +838,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/09.%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/Template%20Method%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
@@ -806,27 +871,27 @@
 
 
   
-    <article id="post-08.解析切面类并实现代理类逻辑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Strategy模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/">08.解析切面类并实现代理类逻辑</a>
+      <a class="article-title" href="/2024/04/01/Strategy%E6%A8%A1%E5%BC%8F/">Strategy模式</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:48:53.519Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/Strategy%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:26:01.212Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>通能够生成代理对象后，我们就需要实现代理对象的调用逻辑了。</p>
+        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231030205213905.png" alt="image-20231030205213905" style="zoom:50%;" />
         
       
 
@@ -840,7 +905,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM AOP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 设计模式</a>
         		</li>
       		
 		</ul>
@@ -850,7 +915,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/08.%E8%A7%A3%E6%9E%90%E5%88%87%E9%9D%A2%E7%B1%BB%E5%B9%B6%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%90%86%E7%B1%BB%E9%80%BB%E8%BE%91/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/Strategy%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
@@ -883,27 +948,27 @@
 
 
   
-    <article id="post-07.实现ProxyFactory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Singleton模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/">07.实现ProxyFactory</a>
+      <a class="article-title" href="/2024/04/01/Singleton%E6%A8%A1%E5%BC%8F/">Singleton模式</a>
     </h1>
   
 
         
-        <a href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/" class="archive-article-date">
-  	<time datetime="2024-03-17T08:48:53.517Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-03-17</time>
+        <a href="/2024/04/01/Singleton%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2024-04-01T02:26:01.210Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2024-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>通过JDK的动态代理和<code>ByteBuddy</code>字节码技术来生成代理代理对象</p>
+        <img src="https://gitee.com/dzy2003/cartographic-bed/raw/master/imgs/image-20231020164054547.png" alt="image-20231020164054547" style="zoom:50%;" />
         
       
 
@@ -917,7 +982,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 手写SSM AOP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记 设计模式</a>
         		</li>
       		
 		</ul>
@@ -927,7 +992,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2024/03/17/07.%E5%AE%9E%E7%8E%B0ProxyFactory/">展开全文 >></a>
+          <a class="article-more-a" href="/2024/04/01/Singleton%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
@@ -962,7 +1027,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1071,6 +1136,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">笔记 javaWeb</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Linux</a>
               </li>
              
@@ -1079,11 +1152,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 MyBatisPlus SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">笔记 javaWeb</a>
+                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1091,15 +1160,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 SpringMVC SSM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">笔记 Spring SSM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 redis 项目</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1135,10 +1200,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">笔记 JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">笔记 设计模式</a>
               </li>
              
@@ -1147,7 +1208,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">笔记 算法 排序</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 微服务组件</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">笔记 JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1155,7 +1220,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
+                <a href="javascript:void(0)" class="js-tag color4">笔记 算法 排序</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1163,11 +1228,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">项目</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">笔记 JavaSe</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">项目</a>
+                <a href="javascript:void(0)" class="js-tag color5">笔记 python</a>
               </li>
             
             <div class="clearfix"></div>
